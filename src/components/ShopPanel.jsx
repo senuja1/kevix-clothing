@@ -98,20 +98,22 @@ export function ShopPanel({
         </button>
       )}
 
-      {/* Panel Header */}
-      <div className="p-5 sm:p-8 pb-4 border-b border-black/10 bg-[#F4EFEA] pr-16">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-serif text-3xl sm:text-4xl text-[#1A1A1A] font-normal">
-            In this look
-          </h2>
-          <span className="text-xs sm:text-sm tracking-widest uppercase text-black/50 font-mono font-semibold">
-            {look.pieces.length} PIECES
-          </span>
+      {/* Panel Header (Desktop Only; mobile uses the bottom sheet header) */}
+      {!isMobile && (
+        <div className="p-5 sm:p-8 pb-4 border-b border-black/10 bg-[#F4EFEA] pr-16">
+          <div className="flex items-baseline justify-between">
+            <h2 className="font-serif text-3xl sm:text-4xl text-[#1A1A1A] font-normal">
+              In this look
+            </h2>
+            <span className="text-xs sm:text-sm tracking-widest uppercase text-black/50 font-mono font-semibold">
+              {look.pieces.length} PIECES
+            </span>
+          </div>
+          <p className="text-sm sm:text-base text-black/65 mt-1.5 font-sans">
+            Look {look.number} · {look.title}
+          </p>
         </div>
-        <p className="text-sm sm:text-base text-black/65 mt-1.5 font-sans">
-          Look {look.number} · {look.title}
-        </p>
-      </div>
+      )}
 
       {/* Scrollable Piece Accordion List */}
       <div className="flex-1 overflow-y-auto px-5 sm:px-8 divide-y divide-black/10">

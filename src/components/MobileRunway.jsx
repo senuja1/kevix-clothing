@@ -331,7 +331,7 @@ export function MobileRunway({
               </div>
 
               {/* Bottom Sticky Action inside sheet */}
-              <div className="p-4 bg-[#F4EFEA] border-t border-black/10">
+              <div className="p-4 pb-6 bg-[#F4EFEA] border-t border-black/10">
                 <button
                   type="button"
                   onClick={() => {
@@ -351,16 +351,16 @@ export function MobileRunway({
         )}
       </AnimatePresence>
 
-      {/* Pinned Floating Dark Bar at Bottom of Screen (Only visible when user reaches catwalk stage) */}
+      {/* Pinned Floating Dark Bar at Bottom of Screen (Only visible when catwalk stage is in view AND sheet is NOT open) */}
       <AnimatePresence>
-        {isBarVisible && (
+        {!isSheetOpen && isBarVisible && (
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 40 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             onClick={handleAddFullLook}
-            className="fixed bottom-4 inset-x-4 z-50 h-12 bg-[#1A1A1A] text-white px-5 flex items-center justify-between shadow-xl rounded-full cursor-pointer active:scale-98"
+            className="fixed bottom-4 inset-x-4 z-40 h-12 bg-[#1A1A1A] text-white px-5 flex items-center justify-between shadow-xl rounded-full cursor-pointer active:scale-98"
           >
             <span className="text-xs font-medium">
               Add full look to bag · ${totalLookPrice.toFixed(2)}
