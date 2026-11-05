@@ -6,29 +6,27 @@ import {
   Volume2, 
   VolumeX, 
   Maximize2, 
-  ArrowRight, 
   ArrowLeft, 
-  Sparkles, 
+  ChevronLeft,
+  ChevronRight,
   ShoppingBag, 
   Check, 
-  Film, 
-  Clapperboard, 
   Layers 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { BRAND_INFO, LOOKS_DATA } from '../data/looksData';
+import { BRAND_INFO } from '../data/looksData';
 
 export function CampaignPage({ onAddToCart }) {
-  // Main Hero Featured Video State
-  const heroVideoRef = useRef(null);
-  const [isHeroPlaying, setIsHeroPlaying] = useState(true);
-  const [isHeroMuted, setIsHeroMuted] = useState(true);
-  const [heroProgress, setHeroProgress] = useState(0);
-
-  // Gallery active video states
-  const [activeVideoModal, setActiveVideoModal] = useState(null);
-  const [mutedStates, setMutedStates] = useState({ 0: true, 1: true, 2: true, 3: true });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [progresses, setProgresses] = useState({});
   const [addedItemFeedback, setAddedItemFeedback] = useState({});
+  const [activeVideoModal, setActiveVideoModal] = useState(null);
+
+  const videoRefs = useRef({});
+  const carouselRef = useRef(null);
+  const [carouselWidth, setCarouselWidth] = useState(1200);
 
   const campaignFilms = [
     {
@@ -105,38 +103,71 @@ export function CampaignPage({ onAddToCart }) {
     }
   ];
 
-  // Auto-track progress for hero video
+  // Measure carousel container width for pixel-perfect centering
   useEffect(() => {
-    const video = heroVideoRef.current;
-    if (!video) return;
-
-    const handleTimeUpdate = () => {
-      if (video.duration) {
-        setHeroProgress((video.currentTime / video.duration) * 100);
+    const updateWidth = () => {
+      if (carouselRef.current) {
+        setCarouselWidth(carouselRef.current.offsetWidth);
       }
     };
-
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  const toggleHeroPlay = () => {
-    const video = heroVideoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      video.play().catch(() => {});
-      setIsHeroPlaying(true);
+  // Sync video play/pause with active carousel card
+  useEffect(() => {
+    campaignFilms.forEach((_, i) => {
+      const vid = videoRefs.current[i];
+      if (!vid) return;
+      if (i === activeIndex) {
+        if (isPlaying) {
+          vid.play().catch(() => {});
+        } else {
+          vid.pause();
+        }
+      } else {
+        vid.pause();
+      }
+    });
+  }, [activeIndex, isPlaying]);
+
+  // Keyboard navigation for carousel
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (activeVideoModal) return;
+      if (e.key === 'ArrowRight') {
+        setActiveIndex((prev) => (prev + 1) % campaignFilms.length);
+      } else if (e.key === 'ArrowLeft') {
+        setActiveIndex((prev) => (prev - 1 + campaignFilms.length) % campaignFilms.length);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeVideoModal, campaignFilms.length]);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + campaignFilms.length) % campaignFilms.length);
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % campaignFilms.length);
+  };
+
+  const togglePlay = () => {
+    const currentVid = videoRefs.current[activeIndex];
+    if (!currentVid) return;
+    if (isPlaying) {
+      currentVid.pause();
+      setIsPlaying(false);
     } else {
-      video.pause();
-      setIsHeroPlaying(false);
+      currentVid.play().catch(() => {});
+      setIsPlaying(true);
     }
   };
 
-  const toggleHeroMute = () => {
-    const video = heroVideoRef.current;
-    if (!video) return;
-    video.muted = !video.muted;
-    setIsHeroMuted(video.muted);
+  const toggleMute = () => {
+    setIsMuted((prev) => !prev);
   };
 
   const handleQuickAdd = (product) => {
@@ -159,6 +190,13 @@ export function CampaignPage({ onAddToCart }) {
       setAddedItemFeedback((prev) => ({ ...prev, [product.id]: false }));
     }, 1800);
   };
+
+  // Responsive card calculations
+  const isLarge = carouselWidth >= 1024;
+  const isMedium = carouselWidth >= 640;
+  const cardWidth = isLarge ? 350 : isMedium ? 310 : Math.min(carouselWidth * 0.82, 290);
+  const cardGap = isLarge ? 36 : isMedium ? 24 : 16;
+  const offset = (carouselWidth / 2) - (activeIndex * (cardWidth + cardGap) + cardWidth / 2);
 
   return (
     <div className="w-full min-h-screen bg-[#F4EFEA] pt-28 sm:pt-32 pb-20 select-none overflow-x-hidden flex flex-col items-center">
@@ -183,272 +221,272 @@ export function CampaignPage({ onAddToCart }) {
       </div>
 
       {/* Page Hero Title: Dedicated Centered Header Block */}
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-8 text-center flex flex-col items-center justify-center mb-8 sm:mb-12">
-        <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-[#1A1A1A] tracking-tight leading-tight text-center w-full">
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-8 text-center flex flex-col items-center justify-center">
+        <h1 className="text-[clamp(2.5rem,5vw,4rem)] font-serif tracking-tight text-black leading-tight text-center">
           The Campaign Films.
         </h1>
 
-        <p className="text-black/65 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-sans leading-relaxed text-center mt-3 sm:mt-4 w-full">
+        <p className="max-w-2xl mx-auto text-center text-base text-neutral-600 leading-relaxed mt-6 mb-12">
           Raw selvedge denim in motion. Watch the true weight, natural puddle drape, and brass accents recorded directly on models under authentic studio lighting.
         </p>
       </div>
 
-      {/* Featured Spotlight: The New Uploaded Campaign Video */}
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-8 mb-20">
-        <div className="relative rounded-2xl overflow-hidden bg-black border border-black/15 shadow-2xl group">
-          
-          {/* 9:16 Video Canvas with Centered Theater Backdrop */}
-          <div className="relative w-full aspect-[9/16] sm:aspect-[16/10] max-h-[720px] bg-black flex items-center justify-center overflow-hidden">
-            
-            {/* Ambient Blurred Background Video for Widescreen Presentation */}
-            <video
-              src="/videos/campaign_feature.mp4"
-              className="absolute inset-0 w-full h-full object-cover filter blur-2xl opacity-35 scale-110 pointer-events-none hidden sm:block"
-              muted
-              loop
-              autoPlay
-              playsInline
-            />
-
-            {/* Main Foreground High-Res Video */}
-            <video
-              ref={heroVideoRef}
-              src="/videos/campaign_feature.mp4"
-              poster="/videos/thumb_4.jpg"
-              className="relative z-10 h-full max-h-[720px] w-auto aspect-[9/16] object-cover cursor-pointer"
-              loop
-              autoPlay
-              muted={isHeroMuted}
-              playsInline
-              onClick={toggleHeroPlay}
-            />
-
-            {/* Video Controls Overlay */}
-            <div className="absolute inset-x-0 bottom-0 z-20 p-4 sm:p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col gap-3">
-              
-              {/* Progress Track */}
-              <div 
-                className="w-full bg-white/20 h-1 rounded-full overflow-hidden cursor-pointer hover:h-1.5 transition-all"
-                onClick={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const clickPos = (e.clientX - rect.left) / rect.width;
-                  if (heroVideoRef.current && heroVideoRef.current.duration) {
-                    heroVideoRef.current.currentTime = clickPos * heroVideoRef.current.duration;
-                  }
-                }}
-              >
-                <div 
-                  className="bg-white h-full transition-all duration-100 rounded-full" 
-                  style={{ width: `${heroProgress}%` }}
-                />
-              </div>
-
-              {/* Bottom Control Bar */}
-              <div className="flex items-center justify-between text-white">
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={toggleHeroPlay}
-                    aria-label={isHeroPlaying ? "Pause video" : "Play video"}
-                    className="w-10 h-10 rounded-full bg-white/20 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                  >
-                    {isHeroPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={toggleHeroMute}
-                    aria-label={isHeroMuted ? "Unmute audio" : "Mute audio"}
-                    className="w-10 h-10 rounded-full bg-white/20 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                  >
-                    {isHeroMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                  </button>
-
-                  <div className="hidden sm:block text-xs font-mono text-white/80">
-                    <span className="font-bold uppercase tracking-wider text-white">Premiere</span> · Raw Selvedge Baggy Motion
-                  </div>
-                </div>
-
-                {/* Instant Shop Trigger Pill */}
-                <button
-                  type="button"
-                  onClick={() => handleQuickAdd(campaignFilms[0].product)}
-                  className="px-4 py-2 rounded-full bg-white text-[#1A1A1A] hover:bg-[#FAF6F1] font-mono text-xs uppercase tracking-wider font-bold transition-all active:scale-95 flex items-center gap-2 shadow-lg cursor-pointer"
-                >
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  <span>
-                    {addedItemFeedback[campaignFilms[0].product.id] ? "Added to Bag ✓" : `Shop Jean · $${campaignFilms[0].product.price.toFixed(2)}`}
-                  </span>
-                </button>
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* Film Details Under Banner */}
-          <div className="p-6 sm:p-8 bg-[#0E0E11] text-[#E5E0DB] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-white/10">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="px-2 py-0.5 rounded bg-white/10 text-[10px] font-mono uppercase tracking-widest text-amber-300">
-                  Featured Film
-                </span>
-                <span className="text-xs font-mono text-white/50">1280x720 · 4K Studio Reel</span>
-              </div>
-              <h2 className="font-serif text-2xl sm:text-3xl text-white">
-                Director's Cut · Raw Waist Selvedge
-              </h2>
-              <p className="text-white/60 text-xs sm:text-sm mt-1 max-w-xl">
-                Demonstrating the heavy gold topstitching, 14oz rigid Japanese selvedge denim, and authentic true-waist baggy unisex silhouette.
-              </p>
-            </div>
-
-            <Link
-              to="/collection"
-              className="px-5 py-3 rounded-full border border-white/20 hover:border-white text-white font-mono text-xs uppercase tracking-widest transition-all active:scale-95 whitespace-nowrap min-h-[44px] flex items-center justify-center cursor-pointer"
-            >
-              <span>Explore Collection →</span>
-            </Link>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Complete Campaign Video Reel Grid: All 4 Motion Films */}
-      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 space-y-8">
+      {/* Premium Horizontally Scrolling Framer Motion Video Carousel */}
+      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 mb-16 relative">
         
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-4 border-b border-black/10">
-          <div>
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-black/50 block">
-              The 4K Video Archive
-            </span>
-            <h3 className="font-serif text-3xl sm:text-4xl text-[#1A1A1A] mt-1">
-              All Campaign Films in Motion
-            </h3>
-          </div>
-          <p className="text-xs font-mono text-black/50">
-            Tap any reel to inspect piece details or play with sound
-          </p>
+        {/* Floating Navigation Arrows (Desktop >= 768px) */}
+        <div className="hidden md:flex items-center justify-between absolute top-1/2 -translate-y-1/2 inset-x-4 lg:inset-x-8 z-30 pointer-events-none">
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label="Previous Film"
+            className="pointer-events-auto w-12 h-12 rounded-full bg-white/90 hover:bg-white text-black shadow-xl border border-black/10 flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-md"
+          >
+            <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label="Next Film"
+            className="pointer-events-auto w-12 h-12 rounded-full bg-white/90 hover:bg-white text-black shadow-xl border border-black/10 flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-md"
+          >
+            <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+          </button>
         </div>
 
-        {/* 4-Column Video Reel Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {campaignFilms.map((film, idx) => {
-            const isMuted = mutedStates[idx] ?? true;
+        {/* Carousel Viewport Container */}
+        <div 
+          ref={carouselRef}
+          className="w-full overflow-hidden py-6 sm:py-8"
+        >
+          <motion.div
+            className="flex items-center"
+            animate={{ x: offset }}
+            transition={{ type: "spring", stiffness: 280, damping: 28 }}
+            style={{ gap: `${cardGap}px` }}
+          >
+            {campaignFilms.map((film, idx) => {
+              const isActive = idx === activeIndex;
 
-            return (
-              <div 
-                key={film.id}
-                className="group flex flex-col justify-between bg-white rounded-2xl p-3 border border-black/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform duration-300 hover:shadow-lg"
-              >
-                
-                {/* 9:16 Video Player Container */}
-                <div className="relative aspect-[9/16] w-full rounded-xl overflow-hidden bg-black">
-                  
+              return (
+                <motion.div
+                  key={film.id}
+                  animate={{
+                    scale: isActive ? 1.05 : 0.94,
+                    opacity: isActive ? 1 : 0.6,
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 28 }}
+                  onClick={() => {
+                    if (!isActive) {
+                      setActiveIndex(idx);
+                      setIsPlaying(true);
+                    }
+                  }}
+                  className={`relative flex-shrink-0 aspect-[9/16] rounded-2xl overflow-hidden shadow-xl shadow-black/10 cursor-pointer select-none transition-shadow duration-300 ${
+                    isActive 
+                      ? 'shadow-2xl shadow-black/20 ring-1 ring-black/15 z-20' 
+                      : 'z-10 hover:opacity-85'
+                  }`}
+                  style={{ width: `${cardWidth}px` }}
+                >
+                  {/* Strict Portrait Aspect Ratio Video */}
                   <video
+                    ref={(el) => (videoRefs.current[idx] = el)}
                     src={film.videoSrc}
                     poster={film.poster}
-                    className="w-full h-full object-cover cursor-pointer"
                     loop
-                    autoPlay
-                    muted={isMuted}
                     playsInline
-                    onClick={() => setActiveVideoModal(film)}
+                    muted={isMuted || !isActive}
+                    autoPlay
+                    onTimeUpdate={() => {
+                      const vid = videoRefs.current[idx];
+                      if (vid && vid.duration) {
+                        setProgresses((prev) => ({
+                          ...prev,
+                          [idx]: (vid.currentTime / vid.duration) * 100
+                        }));
+                      }
+                    }}
+                    className="w-full h-full object-cover"
                   />
 
-                  {/* Top Tag & Sound Toggle */}
-                  <div className="absolute top-2.5 inset-x-2.5 flex items-center justify-between z-20">
-                    <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[10px] font-mono font-bold text-white uppercase tracking-wider">
+                  {/* Top Bar Overlay */}
+                  <div className="absolute top-3.5 inset-x-3.5 flex items-center justify-between z-20 pointer-events-none">
+                    <span className="px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-[10px] font-mono font-bold text-white uppercase tracking-wider shadow-sm">
                       {film.tag}
                     </span>
 
-                    <button
-                      type="button"
+                    {isActive && (
+                      <div className="flex items-center gap-1.5 pointer-events-auto">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleMute();
+                          }}
+                          aria-label={isMuted ? "Unmute sound" : "Mute sound"}
+                          className="w-8 h-8 rounded-full bg-black/60 hover:bg-black text-white backdrop-blur-md flex items-center justify-center transition active:scale-90 cursor-pointer shadow-sm"
+                        >
+                          {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveVideoModal(film);
+                          }}
+                          aria-label="Expand video"
+                          className="w-8 h-8 rounded-full bg-black/60 hover:bg-black text-white backdrop-blur-md flex items-center justify-center transition active:scale-90 cursor-pointer shadow-sm"
+                        >
+                          <Maximize2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Center Play/Pause Indicator (Only for active video if paused) */}
+                  {isActive && !isPlaying && (
+                    <div 
                       onClick={(e) => {
                         e.stopPropagation();
-                        setMutedStates((prev) => ({ ...prev, [idx]: !isMuted }));
+                        togglePlay();
                       }}
-                      aria-label="Toggle mute"
-                      className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md text-white hover:bg-black flex items-center justify-center transition-colors cursor-pointer"
+                      className="absolute inset-0 z-20 flex items-center justify-center bg-black/30 backdrop-blur-[2px] transition-all cursor-pointer"
                     >
-                      {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-
-                  {/* Bottom Expand Overlay */}
-                  <div 
-                    onClick={() => setActiveVideoModal(film)}
-                    className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-center justify-between text-white cursor-pointer"
-                  >
-                    <span className="text-[11px] font-mono text-white/90 font-medium">
-                      {film.duration} · High-Def
-                    </span>
-                    <div className="w-7 h-7 rounded-full bg-white/20 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md transition-colors">
-                      <Maximize2 className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Metadata & Quick-Add Strip */}
-                <div className="pt-3 pb-1 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="font-serif text-lg text-[#1A1A1A] leading-snug line-clamp-1">
-                      {film.title}
-                    </h4>
-                    <p className="text-xs text-black/60 mt-1 line-clamp-2 font-sans">
-                      {film.subtitle}
-                    </p>
-                  </div>
-
-                  {/* Pinned Product Card inside the video card */}
-                  <div className="mt-3 pt-3 border-t border-black/10 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <img
-                        src={film.product.thumbnail}
-                        alt={film.product.name}
-                        className="w-10 h-12 rounded object-cover border border-black/10 flex-shrink-0"
-                      />
-                      <div className="min-w-0">
-                        <p className="text-xs font-semibold text-[#1A1A1A] truncate">
-                          {film.product.name}
-                        </p>
-                        <p className="text-[11px] font-mono text-black/60 font-bold">
-                          ${film.product.price.toFixed(2)}
-                        </p>
+                      <div className="w-14 h-14 rounded-full bg-white/95 text-black flex items-center justify-center shadow-2xl transition hover:scale-105 active:scale-95">
+                        <Play className="w-6 h-6 fill-current ml-0.5" />
                       </div>
                     </div>
+                  )}
 
-                    <button
-                      type="button"
-                      onClick={() => handleQuickAdd(film.product)}
-                      aria-label={`Add ${film.product.name} to bag`}
-                      className={`p-2.5 rounded-full transition-all active:scale-95 cursor-pointer flex-shrink-0 min-w-[38px] min-h-[38px] flex items-center justify-center ${
-                        addedItemFeedback[film.product.id]
-                          ? 'bg-emerald-600 text-white'
-                          : 'bg-[#1A1A1A] hover:bg-black text-white'
-                      }`}
-                      title="Add piece to bag"
-                    >
-                      {addedItemFeedback[film.product.id] ? (
-                        <Check className="w-4 h-4" />
-                      ) : (
-                        <ShoppingBag className="w-4 h-4" />
-                      )}
-                    </button>
+                  {/* Bottom Information & Quick Action Scrim */}
+                  <div className="absolute inset-x-0 bottom-0 z-20 p-4 sm:p-5 bg-gradient-to-t from-black/95 via-black/50 to-transparent flex flex-col justify-end text-white pointer-events-auto">
+                    
+                    {/* Scrub Progress Track */}
+                    <div className="w-full bg-white/20 h-1 rounded-full overflow-hidden mb-3">
+                      <div 
+                        className="bg-white h-full transition-all duration-100 ease-linear rounded-full"
+                        style={{ width: `${progresses[idx] || 0}%` }}
+                      />
+                    </div>
+
+                    <div className="text-left">
+                      <h3 className="font-serif text-base sm:text-lg text-white font-medium leading-snug drop-shadow-sm">
+                        {film.title}
+                      </h3>
+                      <p className="text-xs text-white/75 font-sans mt-0.5 line-clamp-1">
+                        {film.subtitle}
+                      </p>
+                    </div>
+
+                    {/* Pinned Piece Quick Shop Row (Active Video Only) */}
+                    {isActive && (
+                      <div className="mt-3 pt-3 border-t border-white/15 flex items-center justify-between gap-2.5">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <img
+                            src={film.product.thumbnail}
+                            alt={film.product.name}
+                            className="w-9 h-11 rounded object-cover border border-white/20 flex-shrink-0"
+                          />
+                          <div className="min-w-0 text-left">
+                            <p className="text-xs font-semibold text-white truncate">
+                              {film.product.name}
+                            </p>
+                            <p className="text-[11px] font-mono text-white/80 font-bold">
+                              ${film.product.price.toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleQuickAdd(film.product);
+                          }}
+                          aria-label={`Add ${film.product.name} to bag`}
+                          className={`px-3.5 py-2 rounded-full font-mono text-xs uppercase tracking-wider font-bold transition-all active:scale-95 flex items-center gap-1.5 flex-shrink-0 cursor-pointer shadow-lg ${
+                            addedItemFeedback[film.product.id]
+                              ? 'bg-emerald-500 text-white'
+                              : 'bg-white text-black hover:bg-neutral-100'
+                          }`}
+                        >
+                          {addedItemFeedback[film.product.id] ? (
+                            <>
+                              <Check className="w-3.5 h-3.5" />
+                              <span>Added ✓</span>
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingBag className="w-3.5 h-3.5" />
+                              <span>Shop Piece</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+
                   </div>
 
-                </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
 
-              </div>
-            );
-          })}
+        {/* Carousel Bottom Controls & Indicators */}
+        <div className="flex flex-col items-center gap-4 mt-6">
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous Campaign Film"
+              className="w-11 h-11 rounded-full bg-white hover:bg-neutral-100 text-black shadow-md border border-black/10 flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+            </button>
+
+            {/* Pagination indicator pills */}
+            <div className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-black/5 border border-black/5">
+              {campaignFilms.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => {
+                    setActiveIndex(i);
+                    setIsPlaying(true);
+                  }}
+                  aria-label={`Go to film ${i + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    i === activeIndex 
+                      ? 'w-7 bg-black' 
+                      : 'w-2 bg-black/25 hover:bg-black/50'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next Campaign Film"
+              className="w-11 h-11 rounded-full bg-white hover:bg-neutral-100 text-black shadow-md border border-black/10 flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+            </button>
+          </div>
+
+          <p className="text-xs font-mono text-neutral-500 uppercase tracking-widest">
+            Film {activeIndex + 1} of {campaignFilms.length} · Tap any card or use arrows to navigate
+          </p>
         </div>
 
       </div>
 
       {/* Production Notes / Atelier Sourcing Accordion */}
-      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 mt-20">
+      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 mt-12">
         <div className="bg-[#FAF6F1] rounded-2xl border border-black/10 p-8 sm:p-12 space-y-6">
           <div className="flex items-center gap-2">
             <Layers className="w-4 h-4 text-[#1A1A1A]" />
@@ -491,42 +529,39 @@ export function CampaignPage({ onAddToCart }) {
       {/* Fullscreen Video Modal */}
       <AnimatePresence>
         {activeVideoModal && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setActiveVideoModal(null)}
-              className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8"
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActiveVideoModal(null)}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8"
+          >
+            <div 
+              className="relative max-w-sm sm:max-w-md w-full aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl bg-black border border-white/20"
+              onClick={(e) => e.stopPropagation()}
             >
-              <div 
-                className="relative max-w-sm sm:max-w-md w-full aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl bg-black border border-white/20"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <video
-                  src={activeVideoModal.videoSrc}
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  controls
-                  playsInline
-                />
+              <video
+                src={activeVideoModal.videoSrc}
+                className="w-full h-full object-cover"
+                autoPlay
+                controls
+                playsInline
+              />
 
-                <div className="absolute top-4 right-4 z-30">
-                  <button
-                    type="button"
-                    onClick={() => setActiveVideoModal(null)}
-                    className="w-10 h-10 rounded-full bg-black/70 border border-white/20 text-white flex items-center justify-center hover:bg-black cursor-pointer"
-                  >
-                    ✕
-                  </button>
-                </div>
+              <div className="absolute top-4 right-4 z-30">
+                <button
+                  type="button"
+                  onClick={() => setActiveVideoModal(null)}
+                  className="w-10 h-10 rounded-full bg-black/70 border border-white/20 text-white flex items-center justify-center hover:bg-black cursor-pointer"
+                >
+                  ✕
+                </button>
               </div>
-            </motion.div>
-          </>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
     </div>
   );
 }
-

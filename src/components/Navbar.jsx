@@ -107,12 +107,12 @@ export function Navbar({
         }`}
       >
         {/* Main Primary Row: Brand Logo & Desktop Nav & Actions */}
-        <div className="w-full h-14 sm:h-16 px-4 sm:px-10 lg:px-20 xl:px-24 flex items-center justify-between">
+        <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto h-16 sm:h-20 px-4 sm:px-8 lg:px-12 flex items-center justify-between relative">
           
           {/* Brand Identity: Circular Logo + KevixClothing Stylized Geometric Wordmark */}
           <Link 
             to="/"
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group py-2 -ml-2 pl-2 transition-transform duration-200 min-h-[44px]"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group py-2 -ml-2 pl-2 transition-transform duration-200 min-h-[44px] z-10"
           >
             {/* Round Logo */}
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-white/20 bg-black shadow-sm flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
@@ -132,14 +132,14 @@ export function Navbar({
             </div>
           </Link>
 
-          {/* Center Navigation Links (Desktop >= 768px) */}
-          <nav className="hidden md:flex items-center gap-8 text-xs font-mono uppercase tracking-widest font-semibold">
+          {/* Center Navigation Links (Desktop >= 768px): Mathematically Centered */}
+          <nav className="hidden md:flex items-center gap-8 lg:gap-10 absolute left-1/2 -translate-x-1/2 h-full">
             <Link 
               to="/" 
-              className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+              className={`inline-flex items-center text-sm font-semibold tracking-wide uppercase transition-all duration-200 pb-1 border-b-2 ${
                 isHomePage
-                  ? 'font-bold underline underline-offset-8 decoration-2'
-                  : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+                  ? hasSolidNav ? 'text-black border-black' : 'text-white border-white'
+                  : hasSolidNav ? 'text-neutral-800 hover:text-black border-transparent' : 'text-white/80 hover:text-white border-transparent'
               }`}
             >
               Runway
@@ -147,10 +147,10 @@ export function Navbar({
 
             <Link 
               to="/collection" 
-              className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+              className={`inline-flex items-center text-sm font-semibold tracking-wide uppercase transition-all duration-200 pb-1 border-b-2 ${
                 isCollectionPage
-                  ? 'font-bold underline underline-offset-8 decoration-2'
-                  : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+                  ? hasSolidNav ? 'text-black border-black' : 'text-white border-white'
+                  : hasSolidNav ? 'text-neutral-800 hover:text-black border-transparent' : 'text-white/80 hover:text-white border-transparent'
               }`}
             >
               Collection
@@ -158,10 +158,10 @@ export function Navbar({
 
             <Link 
               to="/campaign" 
-              className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+              className={`inline-flex items-center text-sm font-semibold tracking-wide uppercase transition-all duration-200 pb-1 border-b-2 ${
                 isCampaignPage
-                  ? 'font-bold underline underline-offset-8 decoration-2'
-                  : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+                  ? hasSolidNav ? 'text-black border-black' : 'text-white border-white'
+                  : hasSolidNav ? 'text-neutral-800 hover:text-black border-transparent' : 'text-white/80 hover:text-white border-transparent'
               }`}
             >
               Campaign
@@ -221,18 +221,18 @@ export function Navbar({
         {/* Dedicated Mobile Navigation Strip: RUNWAY | COLLECTION | CAMPAIGN */}
         <nav 
           aria-label="Mobile Navigation Strip"
-          className={`flex md:hidden w-full items-center justify-center gap-7 sm:gap-9 py-2 border-t text-xs font-mono uppercase tracking-[0.2em] font-bold transition-colors ${
+          className={`flex md:hidden w-full items-center justify-center gap-7 sm:gap-9 py-2.5 border-t text-sm font-semibold tracking-wide uppercase transition-colors ${
             hasSolidNav 
-              ? 'border-black/5 bg-white/70 text-[#1A1A1A]' 
-              : 'border-white/10 bg-black/40 text-white'
+              ? 'border-black/5 bg-white/95 text-neutral-800' 
+              : 'border-white/10 bg-black/60 text-white'
           }`}
         >
           <Link 
             to="/" 
-            className={`min-h-[36px] flex items-center relative py-1 transition-colors ${
+            className={`pb-1 border-b-2 transition-all ${
               isHomePage
-                ? 'font-bold underline underline-offset-8 decoration-2'
-                : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/75 hover:text-white'
+                ? hasSolidNav ? 'text-black border-black' : 'text-white border-white'
+                : hasSolidNav ? 'text-neutral-800 hover:text-black border-transparent' : 'text-white/75 hover:text-white border-transparent'
             }`}
           >
             Runway
@@ -240,10 +240,10 @@ export function Navbar({
 
           <Link 
             to="/collection" 
-            className={`min-h-[36px] flex items-center relative py-1 transition-colors ${
+            className={`pb-1 border-b-2 transition-all ${
               isCollectionPage
-                ? 'font-bold underline underline-offset-8 decoration-2'
-                : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/75 hover:text-white'
+                ? hasSolidNav ? 'text-black border-black' : 'text-white border-white'
+                : hasSolidNav ? 'text-neutral-800 hover:text-black border-transparent' : 'text-white/75 hover:text-white border-transparent'
             }`}
           >
             Collection
@@ -251,10 +251,10 @@ export function Navbar({
 
           <Link 
             to="/campaign" 
-            className={`min-h-[36px] flex items-center relative py-1 transition-colors ${
+            className={`pb-1 border-b-2 transition-all ${
               isCampaignPage
-                ? 'font-bold underline underline-offset-8 decoration-2'
-                : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/75 hover:text-white'
+                ? hasSolidNav ? 'text-black border-black' : 'text-white border-white'
+                : hasSolidNav ? 'text-neutral-800 hover:text-black border-transparent' : 'text-white/75 hover:text-white border-transparent'
             }`}
           >
             Campaign
