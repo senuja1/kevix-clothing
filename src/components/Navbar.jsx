@@ -11,6 +11,8 @@ export function Navbar({
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isCollectionPage = location.pathname.startsWith('/collection');
+  const isCampaignPage = location.pathname.startsWith('/campaign');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,7 +24,7 @@ export function Navbar({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // On non-home pages (like /collection), always provide high contrast background
+  // On non-home pages (like /collection or /campaign), always provide high contrast background
   const hasSolidNav = !isHomePage || isScrolled;
 
   return (
@@ -37,7 +39,7 @@ export function Navbar({
       {/* Brand Identity: Circular Logo + KevixClothing Wordmark (>= 44x44px touch target) */}
       <Link 
         to="/"
-        className="flex items-center gap-3 cursor-pointer group py-2 -ml-2 pl-2 transition-transform duration-200 min-h-[44px]"
+        className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group py-2 -ml-2 pl-2 transition-transform duration-200 min-h-[44px]"
       >
         {/* Round Logo */}
         <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border border-white/20 bg-black shadow-sm flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
@@ -66,47 +68,68 @@ export function Navbar({
         >
           Runway
         </Link>
+
         <Link 
           to="/collection" 
           className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
-            location.pathname === '/collection'
+            isCollectionPage
               ? 'font-bold underline underline-offset-8 decoration-2'
               : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
           }`}
         >
           Collection
         </Link>
-        <a 
-          href="/#campaign-films" 
-          className={`transition-colors min-h-[44px] flex items-center ${
-            hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+
+        <Link 
+          to="/campaign" 
+          className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+            isCampaignPage
+              ? 'font-bold underline underline-offset-8 decoration-2'
+              : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
           }`}
         >
           Campaign
-        </a>
+        </Link>
       </nav>
 
-      {/* Right: Shopping Bag Pill with Ergonomic Touch Target (>= 44x44px) */}
+      {/* Right: Quick Links + Shopping Bag Pill with Ergonomic Touch Target (>= 44x44px) */}
       <div className="flex items-center gap-2">
         
-        {/* Mobile Collection Quick Link */}
-        <Link
-          to={isHomePage ? "/collection" : "/"}
-          className={`md:hidden text-[11px] font-mono uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border transition-all ${
-            hasSolidNav
-              ? 'border-black/15 text-[#1A1A1A] hover:bg-black/5'
-              : 'border-white/25 text-white hover:bg-white/10'
-          }`}
-        >
-          {isHomePage ? "Collection" : "Runway"}
-        </Link>
+        {/* Mobile Page Navigator Pills (Visible on small screens) */}
+        <div className="flex md:hidden items-center gap-1">
+          <Link
+            to="/collection"
+            className={`text-[10px] font-mono uppercase tracking-wider font-bold px-2.5 py-1.5 rounded-full border transition-all ${
+              isCollectionPage
+                ? 'bg-[#1A1A1A] text-white border-black'
+                : hasSolidNav
+                ? 'border-black/15 text-[#1A1A1A] hover:bg-black/5'
+                : 'border-white/25 text-white hover:bg-white/10'
+            }`}
+          >
+            Archive
+          </Link>
+
+          <Link
+            to="/campaign"
+            className={`text-[10px] font-mono uppercase tracking-wider font-bold px-2.5 py-1.5 rounded-full border transition-all ${
+              isCampaignPage
+                ? 'bg-[#1A1A1A] text-white border-black'
+                : hasSolidNav
+                ? 'border-black/15 text-[#1A1A1A] hover:bg-black/5'
+                : 'border-white/25 text-white hover:bg-white/10'
+            }`}
+          >
+            Films
+          </Link>
+        </div>
 
         {/* Bag Trigger Button */}
         <button
           type="button"
           onClick={onOpenCart}
           aria-label={`Open Shopping Bag (${cartCount} items)`}
-          className={`min-h-[44px] min-w-[44px] px-3.5 sm:px-4 py-2 rounded-full border text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95 shadow-sm ${
+          className={`min-h-[44px] min-w-[44px] px-3 sm:px-4 py-2 rounded-full border text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 cursor-pointer transition-all active:scale-95 shadow-sm ${
             hasSolidNav 
               ? 'border-black/15 bg-white text-[#1A1A1A] hover:border-black' 
               : 'border-white/25 bg-black/40 text-white hover:border-white'

@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { HomePage } from './pages/HomePage';
 import { CollectionPage } from './pages/CollectionPage';
+import { CampaignPage } from './pages/CampaignPage';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -164,6 +165,18 @@ export function App() {
           <Route 
             path="/collections" 
             element={<CollectionPage onAddToCart={handleAddToCart} />} 
+          />
+
+          {/* Dedicated Campaign Page */}
+          <Route 
+            path="/campaign" 
+            element={<CampaignPage onAddToCart={handleAddToCart} />} 
+          />
+
+          {/* Plural alias /campaigns */}
+          <Route 
+            path="/campaigns" 
+            element={<CampaignPage onAddToCart={handleAddToCart} />} 
           />
 
           {/* Fallback to Home */}
