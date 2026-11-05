@@ -163,10 +163,8 @@ export function CampaignPage({ onAddToCart }) {
   return (
     <div className="w-full min-h-screen bg-[#F4EFEA] pt-20 sm:pt-24 pb-20 select-none overflow-x-hidden flex flex-col items-center">
       
-      {/* Top Breadcrumb & Page Intro */}
-      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 mb-8 sm:mb-12">
-        
-        {/* Navigation Breadcrumb */}
+      {/* Top Breadcrumb Bar */}
+      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 mb-6 sm:mb-8">
         <div className="flex items-center justify-between pb-6 border-b border-black/10">
           <Link
             to="/"
@@ -182,27 +180,21 @@ export function CampaignPage({ onAddToCart }) {
             </span>
           </div>
         </div>
+      </div>
 
-        {/* Page Hero Title: Strictly Centered Across Viewport */}
-        <div className="w-full pt-8 sm:pt-12 text-center max-w-4xl mx-auto flex flex-col items-center justify-center space-y-3 sm:space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-black/15 bg-white/70 backdrop-blur-sm text-[11px] font-mono uppercase tracking-[0.22em] text-black/70 shadow-xs mx-auto">
-            <Clapperboard className="w-3.5 h-3.5 text-[#1A1A1A]" />
-            <span>KevixClothing In Motion</span>
-          </div>
+      {/* Page Hero Title: Dedicated Centered Header Block */}
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-8 text-center flex flex-col items-center justify-center mb-8 sm:mb-12">
+        <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-[#1A1A1A] tracking-tight leading-tight text-center w-full">
+          The Campaign Films.
+        </h1>
 
-          <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-[#1A1A1A] tracking-tight leading-tight text-center w-full">
-            The Campaign Films.
-          </h1>
-
-          <p className="text-black/65 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-sans leading-relaxed text-center w-full">
-            Raw selvedge denim in motion. Watch the true weight, natural puddle drape, and brass accents recorded directly on models under authentic studio lighting.
-          </p>
-        </div>
-
+        <p className="text-black/65 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-sans leading-relaxed text-center mt-3 sm:mt-4 w-full">
+          Raw selvedge denim in motion. Watch the true weight, natural puddle drape, and brass accents recorded directly on models under authentic studio lighting.
+        </p>
       </div>
 
       {/* Featured Spotlight: The New Uploaded Campaign Video */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-8 mb-20">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-8 mb-20">
         <div className="relative rounded-2xl overflow-hidden bg-black border border-black/15 shadow-2xl group">
           
           {/* 9:16 Video Canvas with Centered Theater Backdrop */}
