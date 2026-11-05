@@ -1,0 +1,9 @@
+<svg viewBox="0 0 384 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <path d="M 0,0 L 20,0 L 20,100 L 0,100 Z M 20,54 L 56,0 L 75,0 L 32,64 Z M 30,52 L 75,100 L 53,100 L 20,63 Z" transform="translate(0, 0)" />
+    <path d="M 0,0 L 72,0 L 72,21 L 12,21 Z M 0,39.5 L 68,39.5 L 68,60.5 L 0,60.5 Z M 12,79 L 72,79 L 72,100 L 0,100 Z" transform="translate(88, 0)" />
+    <path d="M 0,0 L 20,0 L 41,78 L 62,0 L 82,0 L 51.5,100 L 30.5,100 Z" transform="translate(174, 0)" />
+    <path d="M 0,0 L 20,0 L 20,100 L 0,100 Z" transform="translate(270, 0)" />
+    <path d="M 0,0 L 20,0 L 80,100 L 60,100 Z M 60,0 L 80,0 L 48,51 L 41,40 Z M 32,60 L 0,100 L 20,100 L 39,71 Z" transform="translate(304, 0)" />
+  </g>
+</svg>

@@ -1,0 +1,17 @@
+<svg viewBox="0 0 1026 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <path d="M 0,0 L 20,0 L 20,100 L 0,100 Z M 20,54 L 56,0 L 75,0 L 32,64 Z M 30,52 L 75,100 L 53,100 L 20,63 Z" transform="translate(0, 0)" />
+    <path d="M 0,0 L 72,0 L 72,21 L 12,21 Z M 0,39.5 L 68,39.5 L 68,60.5 L 0,60.5 Z M 12,79 L 72,79 L 72,100 L 0,100 Z" transform="translate(86, 0)" />
+    <path d="M 0,0 L 20,0 L 41,78 L 62,0 L 82,0 L 51.5,100 L 30.5,100 Z" transform="translate(170, 0)" />
+    <path d="M 0,0 L 20,0 L 20,100 L 0,100 Z" transform="translate(264, 0)" />
+    <path d="M 0,0 L 20,0 L 80,100 L 60,100 Z M 60,0 L 80,0 L 48,51 L 41,40 Z M 32,60 L 0,100 L 20,100 L 39,71 Z" transform="translate(296, 0)" />
+    <path d="M 76,0 C 33,0 0,22 0,50 C 0,78 33,100 76,100 L 76,79 C 43,79 20,66 20,50 C 20,34 43,21 76,21 Z" transform="translate(388, 0)" />
+    <path d="M 0,0 L 20,0 L 20,79 L 66,79 L 66,100 L 0,100 Z" transform="translate(476, 0)" />
+    <path d="M 41,0 C 18,0 0,22 0,50 C 0,78 18,100 41,100 C 64,100 82,78 82,50 C 82,22 64,0 41,0 Z M 41,21 C 52,21 61,34 61,50 C 61,66 52,79 41,79 C 30,79 21,66 21,50 C 21,34 30,21 41,21 Z" transform="translate(554, 0)" />
+    <path d="M 0,0 L 74,0 L 74,21 L 47,21 L 47,100 L 27,100 L 27,21 L 0,21 Z" transform="translate(648, 0)" />
+    <path d="M 0,0 L 20,0 L 20,39.5 L 56,39.5 L 56,0 L 76,0 L 76,100 L 56,100 L 56,60.5 L 20,60.5 L 20,100 L 0,100 Z" transform="translate(734, 0)" />
+    <path d="M 0,0 L 20,0 L 20,100 L 0,100 Z" transform="translate(822, 0)" />
+    <path d="M 0,0 L 20,0 L 20,35 L 56,95 L 56,0 L 78,0 L 78,100 L 58,100 L 58,65 L 20,5 L 20,100 L 0,100 Z" transform="translate(854, 0)" />
+    <path d="M 76,0 C 33,0 0,22 0,50 C 0,78 33,100 76,100 C 80,100 82,99 82,96 L 82,48 L 41,48 L 41,68 L 62,68 L 62,79 C 48,79 20,68 20,50 C 20,34 43,21 76,21 Z" transform="translate(944, 0)" />
+  </g>
+</svg>

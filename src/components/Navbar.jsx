@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BRAND_INFO, ARCHIVE_PRODUCTS } from '../data/looksData';
+import { KevixWordmark } from './KevixWordmark';
 
 export function Navbar({ 
   cartCount = 0, 
@@ -106,13 +107,13 @@ export function Navbar({
         }`}
       >
         
-        {/* Brand Identity: Circular Logo + KevixClothing Wordmark */}
+        {/* Brand Identity: Circular Logo + KevixClothing Stylized Geometric Wordmark */}
         <Link 
           to="/"
           className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group py-2 -ml-2 pl-2 transition-transform duration-200 min-h-[44px]"
         >
           {/* Round Logo */}
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border border-white/20 bg-black shadow-sm flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-white/20 bg-black shadow-sm flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
             <img 
               src="/logo-round.png" 
               alt={BRAND_INFO.fullName || 'KevixClothing'} 
@@ -120,9 +121,12 @@ export function Navbar({
             />
           </div>
 
-          {/* KevixClothing Name */}
-          <div className="tracking-[0.14em] sm:tracking-[0.16em] font-extrabold text-sm sm:text-base md:text-lg font-sans uppercase whitespace-nowrap">
-            {BRAND_INFO.name || 'KevixClothing'}
+          {/* KevixClothing Stylized Geometric Logotype */}
+          <div className="flex items-center">
+            <KevixWordmark 
+              mode="full" 
+              className="h-3.5 sm:h-4.5 md:h-5 w-auto fill-current" 
+            />
           </div>
         </Link>
 

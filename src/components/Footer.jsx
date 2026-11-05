@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { MessageSquare, Check, ArrowRight } from 'lucide-react';
 import { BRAND_INFO } from '../data/looksData';
+import { KevixWordmark } from './KevixWordmark';
+import { BeBetterEverydayWordmark } from './BeBetterEverydayWordmark';
 
 function InstagramIcon({ className = "w-4 h-4" }) {
   return (
@@ -56,24 +58,10 @@ export function Footer() {
       {/* 1. TOP ULTRA-MASSIVE EDGE-TO-EDGE GEOMETRIC WORDMARK */}
       <div className="w-full pt-8 sm:pt-14 pb-4 sm:pb-8 px-2 sm:px-6 flex items-center justify-center overflow-hidden border-b border-white/10">
         <div className="w-full max-w-[1700px] mx-auto flex items-center justify-center">
-          <svg 
-            viewBox="0 0 1440 210" 
-            className="w-full h-auto max-h-[140px] sm:max-h-[220px] md:max-h-[280px] fill-white select-none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <text 
-              x="50%" 
-              y="74%" 
-              textAnchor="middle" 
-              fontFamily="'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif"
-              fontWeight="950"
-              fontSize="185"
-              letterSpacing="-0.035em"
-              fill="#FFFFFF"
-            >
-              KEVIXCLOTHING
-            </text>
-          </svg>
+          <KevixWordmark 
+            mode="condensed" 
+            className="w-full h-auto max-h-[140px] sm:max-h-[220px] md:max-h-[280px] fill-white select-none drop-shadow-[0_4px_30px_rgba(255,255,255,0.08)]" 
+          />
         </div>
       </div>
 
@@ -229,11 +217,13 @@ export function Footer() {
           </a>
         </div>
 
-        {/* Center: Bold Italic Tagline */}
-        <div className="text-center">
-          <span className="font-sans italic font-black uppercase text-sm sm:text-base tracking-[0.14em] text-white">
-            BE BETTER EVERYDAY
-          </span>
+        {/* Center: Stylish Geometric High-Fashion Tagline */}
+        <div className="flex items-center justify-center gap-3 sm:gap-4 group">
+          <span className="hidden sm:inline-block w-6 md:w-12 h-px bg-gradient-to-r from-transparent via-white/20 to-white/50" />
+          <div className="flex items-center transform -skew-x-[11deg] transition-all duration-300 group-hover:scale-105 drop-shadow-[0_0_12px_rgba(255,255,255,0.25)] group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.65)]">
+            <BeBetterEverydayWordmark className="h-3 sm:h-3.5 md:h-4 w-auto fill-white select-none" />
+          </div>
+          <span className="hidden sm:inline-block w-6 md:w-12 h-px bg-gradient-to-l from-transparent via-white/20 to-white/50" />
         </div>
 
         {/* Right: Copyright & Live Chat Pill Button */}
