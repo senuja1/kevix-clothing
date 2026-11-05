@@ -5,6 +5,7 @@ import { HeroSection } from './components/HeroSection';
 import { RunwayStage } from './components/RunwayStage';
 import { ShopPanel } from './components/ShopPanel';
 import { MobileRunway } from './components/MobileRunway';
+import { ProductGrid } from './components/ProductGrid';
 import { CampaignVideos } from './components/CampaignVideos';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
@@ -60,6 +61,8 @@ export function App() {
       }
       return [...prevItems, { ...newItem, quantity: 1 }];
     });
+    // Requirement 2: opens the drawer immediately without leaving the page
+    setIsCartOpen(true);
   };
 
   const handleAddLookToCart = (newItems) => {
@@ -78,6 +81,8 @@ export function App() {
       });
       return updated;
     });
+    // Requirement 2: opens the drawer immediately without leaving the page
+    setIsCartOpen(true);
   };
 
   const handleUpdateQuantity = (id, newQuantity) => {
@@ -109,19 +114,19 @@ export function App() {
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-[#F4EFEA] text-[#1A1A1A] flex flex-col font-sans selection:bg-[#1A1A1A] selection:text-white">
+    <div className="min-h-screen bg-[#F4EFEA] text-[#1A1A1A] flex flex-col font-sans selection:bg-[#1A1A1A] selection:text-white w-full max-w-full overflow-x-hidden">
       
       {/* Luxury Loading Screen with Circular KVX/KERB Logo */}
       <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
 
-      {/* Top Navbar with Circular Logo + KevixClothing Name & Bag */}
+      {/* Sticky/Fixed Navbar with Dynamic Scroll Transition & Bag Counter */}
       <Navbar
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
       />
 
       {/* Main Content Area */}
-      <main className="flex-1">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden">
 
         {/* Cinematic KVX CLOTHING Runway Hero Banner */}
         <HeroSection />
@@ -182,7 +187,10 @@ export function App() {
           />
         </div>
 
-        {/* Video Campaign Section ("Our Clothes on Models.") */}
+        {/* Curated Silhouettes: Product Grid with strict aspect-[4/5], hover crossfade, glassmorphic quick-add */}
+        <ProductGrid onAddToCart={handleAddToCart} />
+
+        {/* Video Campaign Section ("Our Clothes on Models.") with generous footer space */}
         <CampaignVideos
           onSelectLookAndShop={(lookIdx) => {
             setCurrentLookIndex(lookIdx);

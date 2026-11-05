@@ -157,7 +157,7 @@ export function CampaignVideos({ onSelectLookAndShop }) {
   return (
     <section 
       id="campaign-films"
-      className="w-full bg-[#EFE9E2] border-t border-black/10 py-10 sm:py-12 lg:py-14 px-4 sm:px-8 select-none flex flex-col items-center justify-center"
+      className="w-full bg-[#EFE9E2] border-t border-black/10 pt-14 sm:pt-20 lg:pt-24 pb-28 sm:pb-36 lg:pb-48 px-4 sm:px-8 select-none flex flex-col items-center justify-center"
     >
       
       {/* Editorial Section Header: Centered Headline Only */}

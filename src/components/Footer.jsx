@@ -115,8 +115,9 @@ export function Footer() {
     { label: "Look 02 · Selvedge Wide-Leg", action: () => scrollToSection('catwalk-stage') },
     { label: "Look 03 · Studio Essential", action: () => scrollToSection('catwalk-stage') },
     { label: "Look 04 · Raw Minimal", action: () => scrollToSection('catwalk-stage') },
-    { label: "Campaign Reels 4K", action: () => scrollToSection('campaign-films') },
-    { label: "Unisex Baggy Selvedge", action: () => scrollToSection('catwalk-stage') }
+    { label: "Look 05 · Raw Waist Selvedge", action: () => scrollToSection('catwalk-stage') },
+    { label: "Curated Archive Collection", action: () => scrollToSection('archive-collection') },
+    { label: "Campaign Films in Motion", action: () => scrollToSection('campaign-films') }
   ];
 
   const concierge = [
