@@ -168,7 +168,7 @@ export function CampaignVideos({ onSelectLookAndShop }) {
       </div>
 
       {/* Videos Layout: Centered Horizontally with Generous Space Between Videos */}
-      <div className="w-full max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-16 md:gap-20 lg:gap-24 xl:gap-28 2xl:gap-32">
+      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-16 md:gap-20 lg:gap-24 xl:gap-28 2xl:gap-32">
         {videoData.map((item, idx) => {
           const progress = progresses[idx] || 0;
 

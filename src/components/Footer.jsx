@@ -156,7 +156,7 @@ export function Footer() {
 
       {/* Top International Trust Badges Row */}
       <div className="border-b border-white/[0.08] bg-black/40">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-xs text-white/75">
+        <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-6 sm:px-10 lg:px-16 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-xs text-white/75">
           
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white flex-shrink-0">
@@ -202,7 +202,7 @@ export function Footer() {
       </div>
 
       {/* Main Multi-Column Links & Social Grid */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-14 sm:py-20">
+      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-6 sm:px-10 lg:px-16 py-14 sm:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
           
           {/* Column 1: Brand Atelier Statement (Spans 2 cols on desktop) */}

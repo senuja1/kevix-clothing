@@ -55,11 +55,11 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
   return (
     <section 
       id="archive-collection"
-      className="w-full bg-[#F4EFEA] py-8 sm:py-12 px-4 sm:px-8 lg:px-14 xl:px-20 select-none overflow-x-hidden"
+      className="w-full bg-[#F4EFEA] py-6 sm:py-8 px-4 sm:px-8 lg:px-12 select-none overflow-x-hidden flex flex-col items-center justify-center"
     >
-      <div className="max-w-7xl mx-auto space-y-8 sm:space-y-10">
+      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto space-y-8 sm:space-y-10 flex flex-col items-center">
         
-        {/* Optional Section Header */}
+        {/* Optional Section Header (Hidden on dedicated collection page) */}
         {!hideHeader && (
           <div className="text-center max-w-3xl mx-auto flex flex-col items-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/15 bg-white/70 backdrop-blur-sm text-[11px] font-mono uppercase tracking-[0.22em] text-black/70 mb-3 shadow-xs">
@@ -71,17 +71,24 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
               Curated Silhouettes.
             </h2>
 
-            <p className="text-black/60 text-sm sm:text-base mt-2 max-w-xl font-sans">
+            <p className="text-black/60 text-sm sm:text-base mt-2 max-w-xl font-sans text-center">
               Precision-cut raw selvedge denims, structured corsets, and heavyweight cotton essentials constructed for architectural drape.
             </p>
           </div>
         )}
 
-        {/* Filter Controls Row: Category Tabs + Sort Selector */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-black/10 pb-6">
+        {/* Filter Controls Row: Perfectly Centered & Balanced Across Width */}
+        <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4 border-b border-black/10 pb-6">
           
-          {/* Category Tabs with Animated Pill Indicator (Framer Motion layout) */}
-          <div className="flex items-center justify-center overflow-x-auto no-scrollbar py-1 w-full sm:w-auto">
+          {/* Left item counter (Desktop) */}
+          <div className="hidden md:flex items-center min-w-[150px]">
+            <span className="text-xs font-mono uppercase tracking-wider text-black/50 font-bold">
+              {filteredProducts.length} {filteredProducts.length === 1 ? 'Silhouette' : 'Silhouettes'}
+            </span>
+          </div>
+
+          {/* Centered Category Tabs with Animated Pill Indicator (Framer Motion layout) */}
+          <div className="flex items-center justify-center overflow-x-auto no-scrollbar py-1 w-full md:w-auto">
             <div className="inline-flex items-center p-1 sm:p-1.5 rounded-full bg-black/5 border border-black/10 backdrop-blur-md gap-1">
               {ARCHIVE_CATEGORIES.map((category) => {
                 const isActive = activeCategory === category;
@@ -108,13 +115,13 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
             </div>
           </div>
 
-          {/* Sorter & Item Count */}
-          <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-            <span className="text-xs font-mono uppercase tracking-wider text-black/50">
+          {/* Right Sorter Dropdown & Mobile Count */}
+          <div className="flex items-center justify-between md:justify-end gap-3 w-full md:w-auto min-w-[150px]">
+            <span className="md:hidden text-xs font-mono uppercase tracking-wider text-black/50 font-bold">
               {filteredProducts.length} {filteredProducts.length === 1 ? 'Piece' : 'Pieces'}
             </span>
 
-            <div className="flex items-center gap-1.5 bg-white border border-black/10 rounded-full px-3 py-1.5 shadow-xs">
+            <div className="flex items-center gap-1.5 bg-white border border-black/10 rounded-full px-3.5 py-1.5 shadow-xs">
               <ArrowUpDown className="w-3.5 h-3.5 text-black/50" />
               <select
                 value={sortBy}
@@ -130,11 +137,11 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
 
         </div>
 
-        {/* Product Grid: 2-column on mobile, 4-column on desktop */}
+        {/* Product Grid: Strict aspect-[4/5] Cards Evenly Distributed Across Width */}
         <div className="w-full">
           {isLoading ? (
             /* Skeleton Shimmer Loading Cards */
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
+            <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 justify-center">
               {[...Array(8)].map((_, i) => (
                 <div key={i} className="flex flex-col space-y-3">
                   <div className="aspect-[4/5] w-full rounded-xl overflow-hidden bg-black/5 relative animate-pulse">
@@ -149,7 +156,7 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
             /* Active Framer Motion Layout Grid */
             <motion.div 
               layout
-              className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4"
+              className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 justify-center"
             >
               <AnimatePresence mode="popLayout">
                 {filteredProducts.map((product) => {

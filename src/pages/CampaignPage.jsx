@@ -161,10 +161,10 @@ export function CampaignPage({ onAddToCart }) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#F4EFEA] pt-20 sm:pt-24 pb-20 select-none overflow-x-hidden">
+    <div className="w-full min-h-screen bg-[#F4EFEA] pt-20 sm:pt-24 pb-20 select-none overflow-x-hidden flex flex-col items-center">
       
       {/* Top Breadcrumb & Page Intro */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 xl:px-20 mb-8 sm:mb-12">
+      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 mb-8 sm:mb-12">
         
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between pb-6 border-b border-black/10">
@@ -323,7 +323,7 @@ export function CampaignPage({ onAddToCart }) {
       </div>
 
       {/* Complete Campaign Video Reel Grid: All 4 Motion Films */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 xl:px-20 space-y-8">
+      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 space-y-8">
         
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-4 border-b border-black/10">
           <div>
@@ -456,7 +456,7 @@ export function CampaignPage({ onAddToCart }) {
       </div>
 
       {/* Production Notes / Atelier Sourcing Accordion */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 xl:px-20 mt-20">
+      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 mt-20">
         <div className="bg-[#FAF6F1] rounded-2xl border border-black/10 p-8 sm:p-12 space-y-6">
           <div className="flex items-center gap-2">
             <Layers className="w-4 h-4 text-[#1A1A1A]" />
@@ -537,3 +537,4 @@ export function CampaignPage({ onAddToCart }) {
     </div>
   );
 }
+
