@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { MessageSquare, Check, ArrowRight } from 'lucide-react';
-import { BRAND_INFO } from '../data/looksData';
+import { Link } from 'react-router-dom';
+import { MessageSquare, Check } from 'lucide-react';
 import { KevixWordmark } from './KevixWordmark';
 import { BeBetterEverydayWordmark } from './BeBetterEverydayWordmark';
 
@@ -34,7 +33,6 @@ function LinkedInIcon({ className = "w-4 h-4" }) {
 export function Footer() {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -53,50 +51,50 @@ export function Footer() {
   };
 
   return (
-    <footer className="w-full bg-black text-white select-none overflow-hidden border-t border-white/10">
+    <footer className="w-full bg-black text-white select-none overflow-hidden">
       
-      {/* 1. TOP ULTRA-MASSIVE EDGE-TO-EDGE GEOMETRIC WORDMARK */}
-      <div className="w-full pt-8 sm:pt-14 pb-4 sm:pb-8 px-2 sm:px-6 flex items-center justify-center overflow-hidden border-b border-white/10">
-        <div className="w-full max-w-[1700px] mx-auto flex items-center justify-center">
+      {/* 1. TOP EDGE-TO-EDGE GEOMETRIC WORDMARK */}
+      <div className="w-full pt-[clamp(1rem,2.5vw,2.25rem)] pb-[clamp(0.5rem,1.5vw,1.25rem)] px-[1.8%] flex items-center justify-center overflow-hidden">
+        <div className="w-full flex items-center justify-center">
           <KevixWordmark 
             mode="condensed" 
-            className="w-full h-auto max-h-[140px] sm:max-h-[220px] md:max-h-[280px] fill-white select-none drop-shadow-[0_4px_30px_rgba(255,255,255,0.08)]" 
+            className="w-full h-auto fill-white select-none" 
           />
         </div>
       </div>
 
-      {/* 2. MAIN 3-COLUMN CONTENT SECTION */}
-      <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 py-12 sm:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 lg:gap-14">
+      {/* 2. PROPORTIONAL 3-COLUMN INFORMATION ROW (Preserves exact layout across all viewport sizes) */}
+      <div className="w-full px-[3%] pt-[clamp(1rem,2.8vw,2.5rem)] pb-[clamp(1.25rem,3.5vw,3.25rem)]">
+        <div className="w-full flex flex-row items-start">
           
-          {/* Left Column: Sign up now (Spans 5 cols on desktop) */}
-          <div className="md:col-span-5 lg:col-span-6 pr-0 md:pr-6 lg:pr-14">
-            <h3 className="font-serif italic text-2xl sm:text-3xl font-bold text-white tracking-tight">
+          {/* Column 1: Sign up now (0% -> 34.1% width) */}
+          <div className="w-[38%] sm:w-[34.1%] pr-[3.5%] sm:pr-[4.4%] flex-shrink-0">
+            <h3 className="font-sans italic font-bold text-[clamp(0.72rem,1.35vw,0.95rem)] text-white tracking-tight leading-snug">
               Sign up now
             </h3>
-            <p className="text-xs sm:text-sm text-white/55 mt-1.5 font-sans">
+            <p className="text-[clamp(0.55rem,0.95vw,0.75rem)] text-white/50 mt-[clamp(0.2rem,0.5vw,0.45rem)] font-sans leading-relaxed">
               Notifications you won't want to ignore.
             </p>
 
-            {/* Clean Underline Input Form matching the reference design */}
-            <form onSubmit={handleSubscribe} className="mt-6 max-w-md">
-              <div className="relative border-b border-white/25 focus-within:border-white transition-colors pb-2 flex items-center justify-between">
+            {/* Clean Underline Input Form matching reference proportions */}
+            <form onSubmit={handleSubscribe} className="mt-[clamp(0.85rem,2.2vw,1.75rem)] w-full">
+              <div className="relative border-b border-white/25 focus-within:border-white transition-colors pb-[clamp(0.25rem,0.5vw,0.45rem)] flex items-center justify-between gap-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email address"
                   required
-                  className="bg-transparent text-sm text-white placeholder-white/40 focus:outline-none w-full font-sans pr-4"
+                  className="bg-transparent text-[clamp(0.55rem,0.95vw,0.75rem)] text-white placeholder-white/40 focus:outline-none w-full font-sans min-w-0"
                 />
                 
                 <button
                   type="submit"
-                  className="text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap hover:text-white/70 transition-colors cursor-pointer min-h-[36px] flex items-center justify-center pl-2"
+                  className="text-[clamp(0.55rem,0.95vw,0.75rem)] font-bold text-white whitespace-nowrap hover:text-white/75 transition-colors cursor-pointer flex items-center justify-center flex-shrink-0"
                 >
                   {isSubscribed ? (
                     <span className="flex items-center gap-1 text-emerald-400">
-                      <Check className="w-3.5 h-3.5" />
+                      <Check className="w-3 h-3" />
                       <span>Subscribed</span>
                     </span>
                   ) : (
@@ -107,73 +105,73 @@ export function Footer() {
             </form>
           </div>
 
-          {/* Middle Column: Shop (Spans 3 cols on desktop) */}
-          <div className="md:col-span-3 lg:col-span-3">
-            <h4 className="text-xs font-sans text-white/50 tracking-wider mb-4">
+          {/* Column 2: Shop (Starts at ~37.1% of footer width) */}
+          <div className="w-[24%] sm:w-[13.2%] pr-[2%] flex-shrink-0">
+            <h4 className="text-[clamp(0.55rem,0.9vw,0.7rem)] font-sans font-medium text-white/50 mb-[clamp(0.5rem,1.2vw,1rem)]">
               Shop
             </h4>
-            <ul className="space-y-2.5 text-sm font-sans text-white">
+            <ul className="space-y-[clamp(0.35rem,0.85vw,0.65rem)] text-[clamp(0.58rem,1vw,0.78rem)] font-sans font-medium text-white">
               <li>
-                <Link to="/collection" className="hover:text-white/70 transition-colors block">
+                <Link to="/collection" className="hover:text-white/70 transition-colors block leading-snug">
                   Men
                 </Link>
               </li>
               <li>
-                <Link to="/collection" className="hover:text-white/70 transition-colors block">
+                <Link to="/collection" className="hover:text-white/70 transition-colors block leading-snug">
                   Women
                 </Link>
               </li>
               <li>
-                <Link to="/collection" className="hover:text-white/70 transition-colors block">
+                <Link to="/collection" className="hover:text-white/70 transition-colors block leading-snug">
                   Accessories
                 </Link>
               </li>
               <li>
-                <Link to="/collection" className="hover:text-white/70 transition-colors block">
+                <Link to="/collection" className="hover:text-white/70 transition-colors block leading-snug">
                   Gifts
                 </Link>
               </li>
               <li>
-                <Link to="/collection" className="hover:text-white/70 transition-colors block">
+                <Link to="/collection" className="hover:text-white/70 transition-colors block leading-snug">
                   Last Chance
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Right Column: Information (Spans 4 cols on desktop) */}
-          <div className="md:col-span-4 lg:col-span-3">
-            <h4 className="text-xs font-sans text-white/50 tracking-wider mb-4">
+          {/* Column 3: Information (Starts at ~49.5% of footer width) */}
+          <div className="w-[38%] sm:w-[22%] flex-shrink-0">
+            <h4 className="text-[clamp(0.55rem,0.9vw,0.7rem)] font-sans font-medium text-white/50 mb-[clamp(0.5rem,1.2vw,1rem)]">
               Information
             </h4>
-            <ul className="space-y-2.5 text-sm font-sans text-white">
+            <ul className="space-y-[clamp(0.35rem,0.85vw,0.65rem)] text-[clamp(0.58rem,1vw,0.78rem)] font-sans font-medium text-white">
               <li>
-                <span className="hover:text-white/70 transition-colors cursor-pointer block">
+                <span className="hover:text-white/70 transition-colors cursor-pointer block leading-snug">
                   Careers
                 </span>
               </li>
               <li>
-                <span className="hover:text-white/70 transition-colors cursor-pointer block">
+                <span className="hover:text-white/70 transition-colors cursor-pointer block leading-snug">
                   FAQ
                 </span>
               </li>
               <li>
-                <span className="hover:text-white/70 transition-colors cursor-pointer block">
+                <span className="hover:text-white/70 transition-colors cursor-pointer block leading-snug">
                   Submit a request
                 </span>
               </li>
               <li>
-                <span className="hover:text-white/70 transition-colors cursor-pointer block">
+                <span className="hover:text-white/70 transition-colors cursor-pointer block leading-snug">
                   Returns &amp; Exchanges
                 </span>
               </li>
               <li>
-                <span className="hover:text-white/70 transition-colors cursor-pointer block">
+                <span className="hover:text-white/70 transition-colors cursor-pointer block leading-snug">
                   Shipping Policy
                 </span>
               </li>
               <li>
-                <span className="hover:text-white/70 transition-colors cursor-pointer block">
+                <span className="hover:text-white/70 transition-colors cursor-pointer block leading-snug">
                   Contact Us
                 </span>
               </li>
@@ -183,11 +181,11 @@ export function Footer() {
         </div>
       </div>
 
-      {/* 3. BOTTOM BAR: Socials, Bold Italic Tagline, Copyright & Live Chat */}
-      <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 pt-6 pb-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+      {/* 3. BOTTOM BAR: Socials (Left), Tagline (Center), Copyright & Live Chat (Right) */}
+      <div className="w-full px-[3%] pt-[clamp(0.5rem,1.2vw,1rem)] pb-[clamp(0.85rem,1.8vw,1.5rem)] flex flex-row items-center justify-between relative">
         
         {/* Left: Minimalist Social Icons */}
-        <div className="flex items-center gap-4 text-white/75">
+        <div className="flex items-center gap-[clamp(0.5rem,1.1vw,1rem)] text-white/60 z-10">
           <a
             href="https://instagram.com"
             target="_blank"
@@ -195,7 +193,7 @@ export function Footer() {
             aria-label="Instagram"
             className="hover:text-white transition-colors"
           >
-            <InstagramIcon className="w-4 h-4" />
+            <InstagramIcon className="w-[clamp(11px,1.2vw,15px)] h-[clamp(11px,1.2vw,15px)]" />
           </a>
           <a
             href="https://youtube.com"
@@ -204,7 +202,7 @@ export function Footer() {
             aria-label="YouTube"
             className="hover:text-white transition-colors"
           >
-            <YouTubeIcon className="w-4 h-4" />
+            <YouTubeIcon className="w-[clamp(11px,1.2vw,15px)] h-[clamp(11px,1.2vw,15px)]" />
           </a>
           <a
             href="https://linkedin.com"
@@ -213,31 +211,29 @@ export function Footer() {
             aria-label="LinkedIn"
             className="hover:text-white transition-colors"
           >
-            <LinkedInIcon className="w-4 h-4" />
+            <LinkedInIcon className="w-[clamp(11px,1.2vw,15px)] h-[clamp(11px,1.2vw,15px)]" />
           </a>
         </div>
 
-        {/* Center: Stylish Geometric High-Fashion Tagline */}
-        <div className="flex items-center justify-center gap-3 sm:gap-4 group">
-          <span className="hidden sm:inline-block w-6 md:w-12 h-px bg-gradient-to-r from-transparent via-white/20 to-white/50" />
-          <div className="flex items-center transform -skew-x-[11deg] transition-all duration-300 group-hover:scale-105 drop-shadow-[0_0_12px_rgba(255,255,255,0.25)] group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.65)]">
-            <BeBetterEverydayWordmark className="h-3 sm:h-3.5 md:h-4 w-auto fill-white select-none" />
+        {/* Center: Stylish Geometric High-Fashion Tagline (Mathematically Centered) */}
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none">
+          <div className="flex items-center transform -skew-x-[11deg] drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+            <BeBetterEverydayWordmark className="h-[clamp(8px,1.05vw,13px)] w-auto fill-white select-none" />
           </div>
-          <span className="hidden sm:inline-block w-6 md:w-12 h-px bg-gradient-to-l from-transparent via-white/20 to-white/50" />
         </div>
 
         {/* Right: Copyright & Live Chat Pill Button */}
-        <div className="flex items-center gap-4 text-xs font-sans text-white/60">
-          <span>© 2026 KevixClothing</span>
+        <div className="flex items-center gap-[clamp(0.4rem,1vw,0.85rem)] text-[clamp(0.5rem,0.85vw,0.7rem)] font-sans text-white/45 z-10">
+          <span className="whitespace-nowrap">© 2026 KevixClothing</span>
 
           {/* Live Chat Pill Button */}
           <button
             type="button"
             onClick={handleLiveChat}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-sans text-white transition-all active:scale-95 cursor-pointer shadow-sm"
+            className="inline-flex items-center gap-[clamp(0.3rem,0.6vw,0.5rem)] px-[clamp(0.55rem,1.2vw,1rem)] py-[clamp(0.3rem,0.65vw,0.55rem)] rounded-full bg-[#1C1C1E] hover:bg-[#2A2A2D] text-[clamp(0.55rem,0.9vw,0.75rem)] font-sans font-medium text-white transition-all active:scale-95 cursor-pointer shadow-md"
           >
-            <MessageSquare className="w-3.5 h-3.5" />
-            <span>Live chat</span>
+            <MessageSquare className="w-[clamp(10px,1vw,14px)] h-[clamp(10px,1vw,14px)]" />
+            <span className="whitespace-nowrap">Live chat</span>
           </button>
         </div>
 
