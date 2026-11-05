@@ -84,3 +84,4 @@ with open('src/components/KevixWordmark.jsx', 'w', encoding='utf-8') as f:
     f.write(jsx_code)
 
 print("Generated src/components/KevixWordmark.jsx successfully!")
+

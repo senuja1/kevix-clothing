@@ -51,3 +51,4 @@ with open('src/components/BeBetterEverydayWordmark.jsx', 'w', encoding='utf-8') 
     f.write(jsx)
 
 print("Generated src/components/BeBetterEverydayWordmark.jsx successfully!")
+

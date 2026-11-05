@@ -161,7 +161,7 @@ export function CampaignPage({ onAddToCart }) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#F4EFEA] pt-20 sm:pt-24 pb-20 select-none overflow-x-hidden flex flex-col items-center">
+    <div className="w-full min-h-screen bg-[#F4EFEA] pt-28 sm:pt-32 pb-20 select-none overflow-x-hidden flex flex-col items-center">
       
       {/* Top Breadcrumb Bar */}
       <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 mb-6 sm:mb-8">

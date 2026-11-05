@@ -76,3 +76,4 @@ plt.tight_layout(pad=0)
 plt.savefig('be_better_everyday_preview.png', facecolor='#0E0E11', edgecolor='none')
 plt.close()
 print("Saved be_better_everyday_preview.png")
+

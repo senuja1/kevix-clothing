@@ -100,44 +100,139 @@ export function Navbar({
   return (
     <>
       <header 
-        className={`fixed top-0 inset-x-0 z-40 w-full h-14 sm:h-16 px-4 sm:px-10 lg:px-20 xl:px-24 flex items-center justify-between select-none transition-all duration-300 ${
+        className={`fixed top-0 inset-x-0 z-40 w-full flex flex-col select-none transition-all duration-300 ${
           hasSolidNav 
             ? 'bg-white/85 backdrop-blur-md border-b border-black/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] text-[#1A1A1A]' 
-            : 'bg-black/20 backdrop-blur-xs border-b border-white/10 text-white'
+            : 'bg-black/30 backdrop-blur-xs border-b border-white/10 text-white'
         }`}
       >
-        
-        {/* Brand Identity: Circular Logo + KevixClothing Stylized Geometric Wordmark */}
-        <Link 
-          to="/"
-          className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group py-2 -ml-2 pl-2 transition-transform duration-200 min-h-[44px]"
+        {/* Main Primary Row: Brand Logo & Desktop Nav & Actions */}
+        <div className="w-full h-14 sm:h-16 px-4 sm:px-10 lg:px-20 xl:px-24 flex items-center justify-between">
+          
+          {/* Brand Identity: Circular Logo + KevixClothing Stylized Geometric Wordmark */}
+          <Link 
+            to="/"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group py-2 -ml-2 pl-2 transition-transform duration-200 min-h-[44px]"
+          >
+            {/* Round Logo */}
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-white/20 bg-black shadow-sm flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+              <img 
+                src="/logo-round.png" 
+                alt={BRAND_INFO.fullName || 'KevixClothing'} 
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* KevixClothing Stylized Geometric Logotype */}
+            <div className="flex items-center">
+              <KevixWordmark 
+                mode="full" 
+                className="h-3.5 sm:h-4.5 md:h-5 w-auto fill-current" 
+              />
+            </div>
+          </Link>
+
+          {/* Center Navigation Links (Desktop >= 768px) */}
+          <nav className="hidden md:flex items-center gap-8 text-xs font-mono uppercase tracking-widest font-semibold">
+            <Link 
+              to="/" 
+              className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+                isHomePage
+                  ? 'font-bold underline underline-offset-8 decoration-2'
+                  : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              Runway
+            </Link>
+
+            <Link 
+              to="/collection" 
+              className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+                isCollectionPage
+                  ? 'font-bold underline underline-offset-8 decoration-2'
+                  : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              Collection
+            </Link>
+
+            <Link 
+              to="/campaign" 
+              className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+                isCampaignPage
+                  ? 'font-bold underline underline-offset-8 decoration-2'
+                  : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              Campaign
+            </Link>
+          </nav>
+
+          {/* Right Action Icons: Search, User, Bag (Minimal Outline Suite) */}
+          <div className="flex items-center gap-1 sm:gap-2">
+            
+            {/* 1. Search Icon Button */}
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen(true)}
+              aria-label="Search Collection"
+              className={`min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] flex items-center justify-center cursor-pointer transition-all duration-200 hover:opacity-70 active:scale-90 ${
+                hasSolidNav ? 'text-[#1A1A1A]' : 'text-white'
+              }`}
+            >
+              <Search className="w-5 h-5 stroke-[1.6]" />
+            </button>
+
+            {/* 2. User Account / Concierge Icon Button */}
+            <button
+              type="button"
+              onClick={() => setIsAccountOpen(true)}
+              aria-label="Account & Concierge"
+              className={`min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] flex items-center justify-center cursor-pointer transition-all duration-200 hover:opacity-70 active:scale-90 ${
+                hasSolidNav ? 'text-[#1A1A1A]' : 'text-white'
+              }`}
+            >
+              <User className="w-5 h-5 stroke-[1.6]" />
+            </button>
+
+            {/* 3. Shopping Bag Icon Button */}
+            <button
+              type="button"
+              onClick={onOpenCart}
+              aria-label={`Open Shopping Bag (${cartCount} items)`}
+              className={`relative min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] flex items-center justify-center cursor-pointer transition-all duration-200 hover:opacity-70 active:scale-90 ${
+                hasSolidNav ? 'text-[#1A1A1A]' : 'text-white'
+              }`}
+            >
+              <ShoppingBag className="w-5 h-5 stroke-[1.6]" />
+              {cartCount > 0 && (
+                <span className={`absolute top-1 sm:top-1.5 right-1 sm:right-1.5 min-w-[16px] h-4 px-1 rounded-full text-[10px] font-mono font-bold flex items-center justify-center leading-none ${
+                  hasSolidNav ? 'bg-[#1A1A1A] text-white' : 'bg-white text-black'
+                }`}>
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+          </div>
+
+        </div>
+
+        {/* Dedicated Mobile Navigation Strip: RUNWAY | COLLECTION | CAMPAIGN */}
+        <nav 
+          aria-label="Mobile Navigation Strip"
+          className={`flex md:hidden w-full items-center justify-center gap-7 sm:gap-9 py-2 border-t text-xs font-mono uppercase tracking-[0.2em] font-bold transition-colors ${
+            hasSolidNav 
+              ? 'border-black/5 bg-white/70 text-[#1A1A1A]' 
+              : 'border-white/10 bg-black/40 text-white'
+          }`}
         >
-          {/* Round Logo */}
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-white/20 bg-black shadow-sm flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-            <img 
-              src="/logo-round.png" 
-              alt={BRAND_INFO.fullName || 'KevixClothing'} 
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* KevixClothing Stylized Geometric Logotype */}
-          <div className="flex items-center">
-            <KevixWordmark 
-              mode="full" 
-              className="h-3.5 sm:h-4.5 md:h-5 w-auto fill-current" 
-            />
-          </div>
-        </Link>
-
-        {/* Center Navigation Links (Desktop >= 768px) */}
-        <nav className="hidden md:flex items-center gap-8 text-xs font-mono uppercase tracking-widest font-semibold">
           <Link 
             to="/" 
-            className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+            className={`min-h-[36px] flex items-center relative py-1 transition-colors ${
               isHomePage
                 ? 'font-bold underline underline-offset-8 decoration-2'
-                : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+                : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/75 hover:text-white'
             }`}
           >
             Runway
@@ -145,10 +240,10 @@ export function Navbar({
 
           <Link 
             to="/collection" 
-            className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+            className={`min-h-[36px] flex items-center relative py-1 transition-colors ${
               isCollectionPage
                 ? 'font-bold underline underline-offset-8 decoration-2'
-                : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+                : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/75 hover:text-white'
             }`}
           >
             Collection
@@ -156,63 +251,15 @@ export function Navbar({
 
           <Link 
             to="/campaign" 
-            className={`transition-colors min-h-[44px] flex items-center relative py-1 ${
+            className={`min-h-[36px] flex items-center relative py-1 transition-colors ${
               isCampaignPage
                 ? 'font-bold underline underline-offset-8 decoration-2'
-                : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/80 hover:text-white'
+                : hasSolidNav ? 'text-black/60 hover:text-black' : 'text-white/75 hover:text-white'
             }`}
           >
             Campaign
           </Link>
         </nav>
-
-        {/* Right Action Icons: Search, User, Bag (Minimal Outline Suite) */}
-        <div className="flex items-center gap-1 sm:gap-2">
-          
-          {/* 1. Search Icon Button */}
-          <button
-            type="button"
-            onClick={() => setIsSearchOpen(true)}
-            aria-label="Search Collection"
-            className={`min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] flex items-center justify-center cursor-pointer transition-all duration-200 hover:opacity-70 active:scale-90 ${
-              hasSolidNav ? 'text-[#1A1A1A]' : 'text-white'
-            }`}
-          >
-            <Search className="w-5 h-5 stroke-[1.6]" />
-          </button>
-
-          {/* 2. User Account / Concierge Icon Button */}
-          <button
-            type="button"
-            onClick={() => setIsAccountOpen(true)}
-            aria-label="Account & Concierge"
-            className={`min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] flex items-center justify-center cursor-pointer transition-all duration-200 hover:opacity-70 active:scale-90 ${
-              hasSolidNav ? 'text-[#1A1A1A]' : 'text-white'
-            }`}
-          >
-            <User className="w-5 h-5 stroke-[1.6]" />
-          </button>
-
-          {/* 3. Shopping Bag Icon Button */}
-          <button
-            type="button"
-            onClick={onOpenCart}
-            aria-label={`Open Shopping Bag (${cartCount} items)`}
-            className={`relative min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] flex items-center justify-center cursor-pointer transition-all duration-200 hover:opacity-70 active:scale-90 ${
-              hasSolidNav ? 'text-[#1A1A1A]' : 'text-white'
-            }`}
-          >
-            <ShoppingBag className="w-5 h-5 stroke-[1.6]" />
-            {cartCount > 0 && (
-              <span className={`absolute top-1 sm:top-1.5 right-1 sm:right-1.5 min-w-[16px] h-4 px-1 rounded-full text-[10px] font-mono font-bold flex items-center justify-center leading-none ${
-                hasSolidNav ? 'bg-[#1A1A1A] text-white' : 'bg-white text-black'
-              }`}>
-                {cartCount}
-              </span>
-            )}
-          </button>
-
-        </div>
 
       </header>
 
