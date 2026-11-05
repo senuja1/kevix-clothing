@@ -25,22 +25,22 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
 
-html, body {
-  background-color: var(--bg-stage);
-  color: var(--text-primary);
-  font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  min-height: 100vh;
+  html, body {
+    background-color: var(--bg-stage);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
 }
 
 /* Custom Sleek Minimal Scrollbar */

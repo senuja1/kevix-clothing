@@ -27,12 +27,12 @@ export function CollectionPage({ onAddToCart }) {
       </div>
 
       {/* Collection Hero Title: Dedicated Centered Header Block */}
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-8 text-center flex flex-col items-center justify-center mb-8 sm:mb-12">
-        <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-[#1A1A1A] tracking-tight leading-tight text-center w-full">
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-8 text-center flex flex-col items-center justify-center">
+        <h1 className="text-[clamp(2.5rem,5vw,4rem)] font-serif tracking-tight text-black leading-tight text-center">
           The Collection.
         </h1>
 
-        <p className="text-black/65 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-sans leading-relaxed text-center mt-3 sm:mt-4 w-full">
+        <p className="max-w-2xl mx-auto text-center text-base text-neutral-600 leading-relaxed mt-6 mb-12">
           Every garment meticulously crafted with architectural proportions, rigid raw selvedge denim, sculpted corsets, and heavyweight cotton essentials.
         </p>
       </div>
