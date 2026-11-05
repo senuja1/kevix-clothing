@@ -130,6 +130,7 @@ export function App() {
       <Navbar
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
+        onAddToCart={handleAddToCart}
       />
 
       {/* Dynamic Multi-Page Router */}
