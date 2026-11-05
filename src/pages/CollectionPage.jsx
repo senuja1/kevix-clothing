@@ -42,32 +42,6 @@ export function CollectionPage({ onAddToCart }) {
         <ProductGrid onAddToCart={onAddToCart} hideHeader={true} />
       </div>
 
-      {/* Editorial Sourcing & Runway Callout Banner: Centered and Wide */}
-      <div className="w-full max-w-7xl 2xl:max-w-[1540px] mx-auto px-4 sm:px-8 lg:px-12 mt-16 sm:mt-24">
-        <div className="relative rounded-2xl overflow-hidden bg-[#0E0E11] text-[#E5E0DB] p-8 sm:p-14 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
-          
-          <div className="space-y-3 max-w-xl text-center md:text-left">
-            <span className="font-mono text-xs uppercase tracking-[0.25em] text-white/50 block">
-              Atelier &amp; Runway Experience
-            </span>
-            <h3 className="font-serif text-3xl sm:text-4xl text-white">
-              See These Looks in Motion.
-            </h3>
-            <p className="text-white/60 text-xs sm:text-sm leading-relaxed">
-              Experience how each raw selvedge denim silhouette pools and walks. Watch our 2.5D interactive catwalk runway and 4K campaign reels.
-            </p>
-          </div>
-
-          <Link
-            to="/"
-            className="px-8 py-4 rounded-full bg-white text-[#1A1A1A] hover:bg-[#FAF6F1] transition-all font-mono text-xs uppercase tracking-widest font-bold shadow-md active:scale-95 whitespace-nowrap min-h-[44px] flex items-center justify-center cursor-pointer"
-          >
-            Launch Catwalk Runway →
-          </Link>
-
-        </div>
-      </div>
-
     </div>
   );
 }
