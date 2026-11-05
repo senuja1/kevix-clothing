@@ -51,8 +51,8 @@ export function CampaignPage({ onAddToCart }) {
       id: "film-01",
       title: "Indigo Sculpt · Front & Profile",
       subtitle: "Sculpted raw denim corset crop top with brass zipper.",
-      videoSrc: "/videos/reel_01.mp4",
-      poster: "/videos/thumb_1.jpg",
+      videoSrc: "/videos/reel_02.mp4",
+      poster: "/videos/thumb_2.jpg",
       duration: "0:15",
       tag: "Look 01",
       lookNumber: "01",
@@ -69,8 +69,8 @@ export function CampaignPage({ onAddToCart }) {
       id: "film-02",
       title: "Wide-Leg Selvedge · Walking Stride",
       subtitle: "Cropped black Tee paired with True waist baggy jean (Unisex).",
-      videoSrc: "/videos/reel_02.mp4",
-      poster: "/videos/thumb_2.jpg",
+      videoSrc: "/videos/reel_03.mp4",
+      poster: "/videos/thumb_3.jpg",
       duration: "0:18",
       tag: "Look 02",
       lookNumber: "02",
@@ -87,8 +87,8 @@ export function CampaignPage({ onAddToCart }) {
       id: "film-03",
       title: "Studio Essential · Back & Turn",
       subtitle: "Cropped white Tee paired with True waist baggy jean (Unisex).",
-      videoSrc: "/videos/reel_03.mp4",
-      poster: "/videos/thumb_3.jpg",
+      videoSrc: "/videos/reel_01.mp4",
+      poster: "/videos/thumb_1.jpg",
       duration: "0:14",
       tag: "Look 03",
       lookNumber: "03",
@@ -115,22 +115,32 @@ export function CampaignPage({ onAddToCart }) {
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  // Sync video play/pause with active carousel card
+  // Sync video play/pause with active carousel card on mobile and desktop
   useEffect(() => {
     campaignFilms.forEach((_, i) => {
       const vid = videoRefs.current[i];
       if (!vid) return;
+      vid.defaultMuted = true;
+      vid.playsInline = true;
+      vid.setAttribute('playsinline', '');
+      vid.setAttribute('webkit-playsinline', '');
       if (i === activeIndex) {
+        vid.muted = isMuted;
+        if (isMuted) {
+          vid.setAttribute('muted', '');
+        }
         if (isPlaying) {
           vid.play().catch(() => {});
         } else {
           vid.pause();
         }
       } else {
+        vid.muted = true;
+        vid.setAttribute('muted', '');
         vid.pause();
       }
     });
-  }, [activeIndex, isPlaying]);
+  }, [activeIndex, isPlaying, isMuted]);
 
   // Keyboard navigation for carousel
   useEffect(() => {
@@ -297,8 +307,17 @@ export function CampaignPage({ onAddToCart }) {
                     poster={film.poster}
                     loop
                     playsInline
+                    preload="auto"
                     muted={isMuted || !isActive}
-                    autoPlay
+                    autoPlay={isActive}
+                    onLoadedData={(e) => {
+                      const vid = e.currentTarget;
+                      vid.defaultMuted = true;
+                      vid.muted = isMuted || !isActive;
+                      if (isActive && isPlaying) {
+                        vid.play().catch(() => {});
+                      }
+                    }}
                     onTimeUpdate={() => {
                       const vid = videoRefs.current[idx];
                       if (vid && vid.duration) {
@@ -309,7 +328,9 @@ export function CampaignPage({ onAddToCart }) {
                       }
                     }}
                     className="w-full h-full object-cover"
-                  />
+                  >
+                    <source src={film.videoSrc} type="video/mp4" />
+                  </video>
 
                   {/* Top Bar Overlay */}
                   <div className="absolute top-3.5 inset-x-3.5 flex items-center justify-between z-20 pointer-events-none">

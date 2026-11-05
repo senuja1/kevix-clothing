@@ -18,6 +18,7 @@ export function CampaignVideos({ onSelectLookAndShop }) {
     {
       id: "v-01",
       src: "/videos/reel_02.mp4",
+      poster: "/videos/thumb_2.jpg",
       title: "Look 01 · Indigo Sculpt",
       subtitle: "Zip up corset top & raw denim drape",
       lookIndex: 0,
@@ -26,6 +27,7 @@ export function CampaignVideos({ onSelectLookAndShop }) {
     {
       id: "v-02",
       src: "/videos/reel_03.mp4",
+      poster: "/videos/thumb_3.jpg",
       title: "Look 02 · Wide-Leg Selvedge",
       subtitle: "Cropped black Tee & True waist baggy jean",
       lookIndex: 1,
@@ -34,6 +36,7 @@ export function CampaignVideos({ onSelectLookAndShop }) {
     {
       id: "v-03",
       src: "/videos/reel_01.mp4",
+      poster: "/videos/thumb_1.jpg",
       title: "Look 03 · Studio Essential",
       subtitle: "Cropped white Tee & True waist baggy jean",
       lookIndex: 2,
@@ -41,30 +44,70 @@ export function CampaignVideos({ onSelectLookAndShop }) {
     }
   ];
 
-  // Auto-play videos when they come into viewport in the grid
+  // Auto-play videos reliably on iOS Safari & Android Chrome
   useEffect(() => {
+    const observers = [];
+
+    const forcePlayMobile = (vid, idx) => {
+      if (!vid) return;
+      vid.defaultMuted = true;
+      vid.muted = true;
+      vid.playsInline = true;
+      vid.setAttribute('muted', '');
+      vid.setAttribute('playsinline', '');
+      vid.setAttribute('webkit-playsinline', '');
+      vid.play()
+        .then(() => {
+          setPlayingStates((prev) => ({ ...prev, [idx]: true }));
+        })
+        .catch(() => {});
+    };
+
     videoRefs.forEach((ref, idx) => {
       const vid = ref.current;
       if (!vid) return;
+
+      vid.defaultMuted = true;
+      vid.muted = true;
+      vid.playsInline = true;
+      vid.setAttribute('muted', '');
+      vid.setAttribute('playsinline', '');
+      vid.setAttribute('webkit-playsinline', '');
 
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              vid.play().catch(() => {});
-              setPlayingStates((prev) => ({ ...prev, [idx]: true }));
+              forcePlayMobile(vid, idx);
             } else {
               vid.pause();
               setPlayingStates((prev) => ({ ...prev, [idx]: false }));
             }
           });
         },
-        { threshold: 0.2 }
+        { threshold: 0.1 }
       );
 
       observer.observe(vid);
-      return () => observer.disconnect();
+      observers.push(observer);
     });
+
+    // Unlock video playback on first touch for iOS Low Power Mode / strict mobile browsers
+    const unlockOnTouch = () => {
+      videoRefs.forEach((ref, idx) => {
+        const vid = ref.current;
+        if (vid && vid.paused) {
+          forcePlayMobile(vid, idx);
+        }
+      });
+    };
+
+    window.addEventListener('touchstart', unlockOnTouch, { once: true, passive: true });
+
+    return () => {
+      observers.forEach((obs) => obs.disconnect());
+      window.removeEventListener('touchstart', unlockOnTouch);
+    };
   }, []);
 
   // Keyboard navigation & body scroll lock for pop-up modal
@@ -190,16 +233,25 @@ export function CampaignVideos({ onSelectLookAndShop }) {
                 <video
                   ref={videoRefs[idx]}
                   src={item.src}
+                  poster={item.poster}
                   loop
                   muted
                   playsInline
                   autoPlay
-                  preload="metadata"
+                  preload="auto"
                   disablePictureInPicture
                   controlsList="nodownload nofullscreen noremoteplayback"
+                  onLoadedData={(e) => {
+                    const vid = e.currentTarget;
+                    vid.defaultMuted = true;
+                    vid.muted = true;
+                    vid.play().catch(() => {});
+                  }}
                   onTimeUpdate={() => handleTimeUpdate(idx)}
                   className="w-full h-full object-cover"
-                />
+                >
+                  <source src={item.src} type="video/mp4" />
+                </video>
 
                 {/* Top Left Tag Badge */}
                 <div className="absolute top-4 left-4 z-20 pointer-events-none">
