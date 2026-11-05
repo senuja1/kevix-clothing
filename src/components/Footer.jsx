@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   ArrowUpRight, 
   ArrowUp, 
@@ -55,15 +56,24 @@ function PinterestIcon({ className = "w-5 h-5" }) {
 
 export function Footer() {
   const [currency, setCurrency] = useState('USD ($)');
+  const navigate = useNavigate();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const scrollToSection = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+    if (window.location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    } else {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -116,7 +126,7 @@ export function Footer() {
     { label: "Look 03 · Studio Essential", action: () => scrollToSection('catwalk-stage') },
     { label: "Look 04 · Raw Minimal", action: () => scrollToSection('catwalk-stage') },
     { label: "Look 05 · Raw Waist Selvedge", action: () => scrollToSection('catwalk-stage') },
-    { label: "Curated Archive Collection", action: () => scrollToSection('archive-collection') },
+    { label: "Curated Archive Collection", action: () => navigate('/collection') },
     { label: "Campaign Films in Motion", action: () => scrollToSection('campaign-films') }
   ];
 

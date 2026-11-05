@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
-import { HeroSection } from './components/HeroSection';
-import { RunwayStage } from './components/RunwayStage';
-import { ShopPanel } from './components/ShopPanel';
-import { MobileRunway } from './components/MobileRunway';
-import { ProductGrid } from './components/ProductGrid';
-import { CampaignVideos } from './components/CampaignVideos';
+import { HomePage } from './pages/HomePage';
+import { CollectionPage } from './pages/CollectionPage';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { LoadingScreen } from './components/LoadingScreen';
 import { Footer } from './components/Footer';
 import { LOOKS_DATA } from './data/looksData';
+
+// Scroll to top helper on page route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 export function App() {
   const [currentLookIndex, setCurrentLookIndex] = useState(1); // Default to Look 02
@@ -19,7 +24,7 @@ export function App() {
   const [expandedPieceId, setExpandedPieceId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Cart state
+  // Global cart state
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
 
@@ -35,7 +40,6 @@ export function App() {
     } else {
       setCurrentLookIndex(indexOrFn);
     }
-    // When changing looks, reset inspecting state unless staying on same look
     setIsInspecting(false);
     setExpandedPieceId(null);
   };
@@ -61,7 +65,7 @@ export function App() {
       }
       return [...prevItems, { ...newItem, quantity: 1 }];
     });
-    // Requirement 2: opens the drawer immediately without leaving the page
+    // Immediately open slide-over drawer
     setIsCartOpen(true);
   };
 
@@ -81,7 +85,6 @@ export function App() {
       });
       return updated;
     });
-    // Requirement 2: opens the drawer immediately without leaving the page
     setIsCartOpen(true);
   };
 
@@ -116,95 +119,79 @@ export function App() {
   return (
     <div className="min-h-screen bg-[#F4EFEA] text-[#1A1A1A] flex flex-col font-sans selection:bg-[#1A1A1A] selection:text-white w-full max-w-full overflow-x-hidden">
       
+      {/* Scroll restoration helper */}
+      <ScrollToTop />
+
       {/* Luxury Loading Screen with Circular KVX/KERB Logo */}
       <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
 
-      {/* Sticky/Fixed Navbar with Dynamic Scroll Transition & Bag Counter */}
+      {/* Sticky/Fixed Navbar with Dynamic Scroll & Multi-Page Navigation */}
       <Navbar
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
       />
 
-      {/* Main Content Area */}
+      {/* Dynamic Multi-Page Router */}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
-
-        {/* Cinematic KVX CLOTHING Runway Hero Banner */}
-        <HeroSection />
-        
-        {/* Catwalk Runway Stage Anchor ("Shop with us") */}
-        <div id="catwalk-stage" className="w-full">
-          {/* Desktop Stage (>= 1024px): Full Viewport Height minus Navbar */}
-          <div className="hidden lg:flex w-full h-[calc(100svh-56px)] overflow-hidden bg-[#F4EFEA] relative">
-            
-            {/* Left Runway Canvas (Full width when browsing, transitions to 62% when inspecting) */}
-            <RunwayStage
-              looks={LOOKS_DATA}
-              currentLookIndex={currentLookIndex}
-              onSelectLook={handleSelectLook}
-              isInspecting={isInspecting}
-              setIsInspecting={setIsInspecting}
-              expandedPieceId={expandedPieceId}
-              onSelectPiece={handleSelectPiece}
-            />
-
-            {/* Right Shop Panel ("In this look") — Pops up only when clicking model */}
-            <AnimatePresence>
-              {isInspecting && (
-                <motion.div 
-                  initial={{ x: "100%", opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: "100%", opacity: 0 }}
-                  transition={{ type: "spring", damping: 28, stiffness: 260 }}
-                  className="w-[38%] border-l border-black/10 bg-[#F4EFEA] h-full flex flex-col justify-between relative overflow-hidden z-20 shadow-[-12px_0_35px_rgba(0,0,0,0.06)]"
-                >
-                  <ShopPanel
-                    look={currentLook}
-                    isInspecting={isInspecting}
-                    onCloseInspect={() => setIsInspecting(false)}
-                    expandedPieceId={expandedPieceId}
-                    onToggleExpandPiece={handleToggleExpandPiece}
-                    onAddToCart={handleAddToCart}
-                    onAddLookToCart={handleAddLookToCart}
-                    cartItems={cartItems}
-                    isMobile={false}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-          </div>
-
-          {/* Mobile Layout (< 1024px) */}
-          <MobileRunway
-            looks={LOOKS_DATA}
-            currentLookIndex={currentLookIndex}
-            onSelectLook={handleSelectLook}
-            expandedPieceId={expandedPieceId}
-            onToggleExpandPiece={handleToggleExpandPiece}
-            onAddToCart={handleAddToCart}
-            onAddLookToCart={handleAddLookToCart}
-            cartItems={cartItems}
+        <Routes>
+          {/* Home / Runway Page */}
+          <Route 
+            path="/" 
+            element={
+              <HomePage
+                currentLookIndex={currentLookIndex}
+                handleSelectLook={handleSelectLook}
+                isInspecting={isInspecting}
+                setIsInspecting={setIsInspecting}
+                expandedPieceId={expandedPieceId}
+                handleSelectPiece={handleSelectPiece}
+                handleToggleExpandPiece={handleToggleExpandPiece}
+                handleAddToCart={handleAddToCart}
+                handleAddLookToCart={handleAddLookToCart}
+                cartItems={cartItems}
+                currentLook={currentLook}
+              />
+            } 
           />
-        </div>
 
-        {/* Curated Silhouettes: Product Grid with strict aspect-[4/5], hover crossfade, glassmorphic quick-add */}
-        <ProductGrid onAddToCart={handleAddToCart} />
+          {/* Dedicated Collection Page */}
+          <Route 
+            path="/collection" 
+            element={<CollectionPage onAddToCart={handleAddToCart} />} 
+          />
 
-        {/* Video Campaign Section ("Our Clothes on Models.") with generous footer space */}
-        <CampaignVideos
-          onSelectLookAndShop={(lookIdx) => {
-            setCurrentLookIndex(lookIdx);
-            setIsInspecting(true);
-            document.getElementById('catwalk-stage')?.scrollIntoView({ behavior: 'smooth' });
-          }}
-        />
+          {/* Plural alias /collections */}
+          <Route 
+            path="/collections" 
+            element={<CollectionPage onAddToCart={handleAddToCart} />} 
+          />
 
+          {/* Fallback to Home */}
+          <Route 
+            path="*" 
+            element={
+              <HomePage
+                currentLookIndex={currentLookIndex}
+                handleSelectLook={handleSelectLook}
+                isInspecting={isInspecting}
+                setIsInspecting={setIsInspecting}
+                expandedPieceId={expandedPieceId}
+                handleSelectPiece={handleSelectPiece}
+                handleToggleExpandPiece={handleToggleExpandPiece}
+                handleAddToCart={handleAddToCart}
+                handleAddLookToCart={handleAddLookToCart}
+                cartItems={cartItems}
+                currentLook={currentLook}
+              />
+            } 
+          />
+        </Routes>
       </main>
 
-      {/* International Luxury Footer with Social Media & Archive VIP Access */}
+      {/* International Luxury Footer */}
       <Footer />
 
-      {/* Slide-over Cart Preview Drawer */}
+      {/* Shared Slide-over Cart Preview Drawer */}
       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
@@ -214,7 +201,7 @@ export function App() {
         onCheckout={handleCheckout}
       />
 
-      {/* Order Confirmation Modal with Confetti */}
+      {/* Shared Order Confirmation Modal with Confetti */}
       <CheckoutModal
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}

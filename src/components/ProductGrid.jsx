@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Check, Plus, ArrowRight, Sparkles } from 'lucide-react';
+import { ShoppingBag, Check, Plus, ArrowRight, Sparkles, ArrowUpDown } from 'lucide-react';
 import { ARCHIVE_PRODUCTS, ARCHIVE_CATEGORIES, BRAND_INFO } from '../data/looksData';
 
-export function ProductGrid({ onAddToCart }) {
+export function ProductGrid({ onAddToCart, hideHeader = false }) {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [sortBy, setSortBy] = useState("featured");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMobileProduct, setSelectedMobileProduct] = useState(null);
   const [addedItemFeedback, setAddedItemFeedback] = useState({});
@@ -19,9 +20,14 @@ export function ProductGrid({ onAddToCart }) {
     }, 280);
   };
 
-  const filteredProducts = activeCategory === "All"
-    ? ARCHIVE_PRODUCTS
-    : ARCHIVE_PRODUCTS.filter((item) => item.category === activeCategory);
+  const filteredProducts = ARCHIVE_PRODUCTS.filter((item) => {
+    if (activeCategory === "All") return true;
+    return item.category === activeCategory;
+  }).sort((a, b) => {
+    if (sortBy === "price-asc") return a.price - b.price;
+    if (sortBy === "price-desc") return b.price - a.price;
+    return 0; // featured default
+  });
 
   const handleQuickAdd = (product, size) => {
     if (onAddToCart) {
@@ -49,52 +55,79 @@ export function ProductGrid({ onAddToCart }) {
   return (
     <section 
       id="archive-collection"
-      className="w-full bg-[#F4EFEA] border-t border-black/10 py-16 sm:py-24 px-4 sm:px-8 lg:px-14 xl:px-20 select-none overflow-x-hidden"
+      className="w-full bg-[#F4EFEA] py-8 sm:py-12 px-4 sm:px-8 lg:px-14 xl:px-20 select-none overflow-x-hidden"
     >
-      <div className="max-w-7xl mx-auto space-y-10 sm:space-y-12">
+      <div className="max-w-7xl mx-auto space-y-8 sm:space-y-10">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/15 bg-white/70 backdrop-blur-sm text-[11px] font-mono uppercase tracking-[0.22em] text-black/70 mb-3 shadow-xs">
-            <Sparkles className="w-3 h-3 text-[#1A1A1A]" />
-            <span>KevixClothing Archive</span>
+        {/* Optional Section Header */}
+        {!hideHeader && (
+          <div className="text-center max-w-3xl mx-auto flex flex-col items-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/15 bg-white/70 backdrop-blur-sm text-[11px] font-mono uppercase tracking-[0.22em] text-black/70 mb-3 shadow-xs">
+              <Sparkles className="w-3 h-3 text-[#1A1A1A]" />
+              <span>KevixClothing Archive</span>
+            </div>
+
+            <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-[#1A1A1A] tracking-tight leading-tight">
+              Curated Silhouettes.
+            </h2>
+
+            <p className="text-black/60 text-sm sm:text-base mt-2 max-w-xl font-sans">
+              Precision-cut raw selvedge denims, structured corsets, and heavyweight cotton essentials constructed for architectural drape.
+            </p>
+          </div>
+        )}
+
+        {/* Filter Controls Row: Category Tabs + Sort Selector */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-black/10 pb-6">
+          
+          {/* Category Tabs with Animated Pill Indicator (Framer Motion layout) */}
+          <div className="flex items-center justify-center overflow-x-auto no-scrollbar py-1 w-full sm:w-auto">
+            <div className="inline-flex items-center p-1 sm:p-1.5 rounded-full bg-black/5 border border-black/10 backdrop-blur-md gap-1">
+              {ARCHIVE_CATEGORIES.map((category) => {
+                const isActive = activeCategory === category;
+                return (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => handleCategoryChange(category)}
+                    className={`relative px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-sans font-medium tracking-wide transition-colors duration-300 min-h-[44px] flex items-center justify-center cursor-pointer ${
+                      isActive ? 'text-white' : 'text-black/65 hover:text-black'
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeCategoryPill"
+                        className="absolute inset-0 bg-[#1A1A1A] rounded-full shadow-sm"
+                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10 whitespace-nowrap">{category}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-[#1A1A1A] tracking-tight leading-tight">
-            Curated Silhouettes.
-          </h2>
+          {/* Sorter & Item Count */}
+          <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
+            <span className="text-xs font-mono uppercase tracking-wider text-black/50">
+              {filteredProducts.length} {filteredProducts.length === 1 ? 'Piece' : 'Pieces'}
+            </span>
 
-          <p className="text-black/60 text-sm sm:text-base mt-2 max-w-xl font-sans">
-            Precision-cut raw selvedge denims, structured corsets, and heavyweight cotton essentials constructed for architectural drape.
-          </p>
-        </div>
-
-        {/* Category Tabs with Animated Indicator (Framer Motion layout) */}
-        <div className="flex items-center justify-center overflow-x-auto no-scrollbar py-2 px-1">
-          <div className="inline-flex items-center p-1 sm:p-1.5 rounded-full bg-black/5 border border-black/10 backdrop-blur-md gap-1">
-            {ARCHIVE_CATEGORIES.map((category) => {
-              const isActive = activeCategory === category;
-              return (
-                <button
-                  key={category}
-                  type="button"
-                  onClick={() => handleCategoryChange(category)}
-                  className={`relative px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-sans font-medium tracking-wide transition-colors duration-300 min-h-[44px] flex items-center justify-center cursor-pointer ${
-                    isActive ? 'text-white' : 'text-black/65 hover:text-black'
-                  }`}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeCategoryPill"
-                      className="absolute inset-0 bg-[#1A1A1A] rounded-full shadow-sm"
-                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative z-10 whitespace-nowrap">{category}</span>
-                </button>
-              );
-            })}
+            <div className="flex items-center gap-1.5 bg-white border border-black/10 rounded-full px-3 py-1.5 shadow-xs">
+              <ArrowUpDown className="w-3.5 h-3.5 text-black/50" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="text-xs font-mono uppercase bg-transparent text-[#1A1A1A] focus:outline-none cursor-pointer pr-1"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+              </select>
+            </div>
           </div>
+
         </div>
 
         {/* Product Grid: 2-column on mobile, 4-column on desktop */}
