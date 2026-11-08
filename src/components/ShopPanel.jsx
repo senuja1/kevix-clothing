@@ -152,7 +152,7 @@ export function ShopPanel({
                     {piece.name}
                   </h3>
                   <div className="text-sm font-bold text-[#1A1A1A] mt-1">
-                    ${piece.price.toFixed(2)}
+                    LKR {piece.price.toLocaleString()}
                   </div>
                 </div>
 
@@ -238,7 +238,7 @@ export function ShopPanel({
                           <span>Added to bag · {selectedSize}</span>
                         </>
                       ) : (
-                        <span>Add to bag · ${piece.price.toFixed(2)}</span>
+                        <span>Add to bag · LKR {piece.price.toLocaleString()}</span>
                       )}
                     </button>
                   </motion.div>
@@ -260,7 +260,7 @@ export function ShopPanel({
               <span className="text-sm text-black/55">· {look.pieces.length} pieces</span>
             </div>
             <div className="text-xl font-bold text-[#1A1A1A]">
-              ${totalLookPrice.toFixed(2)}
+              LKR {totalLookPrice.toLocaleString()}
             </div>
           </div>
 

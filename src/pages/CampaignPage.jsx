@@ -41,7 +41,7 @@ export function CampaignPage({ onAddToCart }) {
       product: {
         id: "p-501",
         name: "True waist baggy jean (Unisex)",
-        price: 98.00,
+        price: 5600,
         size: "32",
         thumbnail: "/products/raw_waist_baggy.jpg",
         brand: "KevixClothing"
@@ -59,7 +59,7 @@ export function CampaignPage({ onAddToCart }) {
       product: {
         id: "p-101",
         name: "Zip up corset top",
-        price: 78.00,
+        price: 3500,
         size: "S",
         thumbnail: "/products/crop_top_denim.jpg",
         brand: "KevixClothing"
@@ -77,7 +77,7 @@ export function CampaignPage({ onAddToCart }) {
       product: {
         id: "p-202",
         name: "True waist baggy jean (Unisex)",
-        price: 98.00,
+        price: 5600,
         size: "32",
         thumbnail: "/products/kvx_wide_denim.jpg",
         brand: "KevixClothing"
@@ -95,7 +95,7 @@ export function CampaignPage({ onAddToCart }) {
       product: {
         id: "p-301",
         name: "Cropped white Tee",
-        price: 48.00,
+        price: 2300,
         size: "M",
         thumbnail: "/products/kvx_white_tee.jpg",
         brand: "KevixClothing"
@@ -416,7 +416,7 @@ export function CampaignPage({ onAddToCart }) {
                               {film.product.name}
                             </p>
                             <p className="text-[11px] font-mono text-white/80 font-bold">
-                              ${film.product.price.toFixed(2)}
+                              LKR {film.product.price.toLocaleString()}
                             </p>
                           </div>
                         </div>

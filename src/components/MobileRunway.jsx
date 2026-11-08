@@ -267,7 +267,7 @@ export function MobileRunway({
               {currentLook.pieces.length}
             </span>
           </span>
-          <span className="text-black/50 text-[11px] font-mono">${totalLookPrice.toFixed(2)} →</span>
+          <span className="text-black/50 text-[11px] font-mono">LKR {totalLookPrice.toLocaleString()} →</span>
         </button>
       </div>
 
@@ -341,7 +341,7 @@ export function MobileRunway({
                   className="w-full h-12 bg-[#1A1A1A] text-white px-5 rounded-full flex items-center justify-between shadow-xl cursor-pointer active:scale-98"
                 >
                   <span className="text-xs font-bold">
-                    Add full look to bag · ${totalLookPrice.toFixed(2)}
+                    Add full look to bag · LKR {totalLookPrice.toLocaleString()}
                   </span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
@@ -363,7 +363,7 @@ export function MobileRunway({
             className="fixed bottom-4 inset-x-4 z-40 h-12 bg-[#1A1A1A] text-white px-5 flex items-center justify-between shadow-xl rounded-full cursor-pointer active:scale-98"
           >
             <span className="text-xs font-medium">
-              Add full look to bag · ${totalLookPrice.toFixed(2)}
+              Add full look to bag · LKR {totalLookPrice.toLocaleString()}
             </span>
             <ArrowRight className="w-4 h-4" />
           </motion.div>

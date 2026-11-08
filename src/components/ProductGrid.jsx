@@ -257,7 +257,7 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
 
                         <div className="flex items-baseline justify-between mt-1">
                           <span className="text-[clamp(0.8125rem,0.85vw+0.45rem,0.95rem)] font-mono font-semibold text-black/80">
-                            ${product.price.toFixed(2)}
+                            LKR {product.price.toLocaleString()}
                           </span>
                           <span className="text-[11px] font-mono text-black/50 uppercase">
                             {product.brand}
@@ -306,7 +306,7 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
                     {selectedMobileProduct.name}
                   </h4>
                   <p className="text-sm font-mono font-bold text-black/75 mt-0.5">
-                    ${selectedMobileProduct.price.toFixed(2)} USD
+                    LKR {selectedMobileProduct.price.toLocaleString()}
                   </p>
                 </div>
               </div>

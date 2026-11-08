@@ -338,7 +338,7 @@ export function Navbar({
                               {prod.name}
                             </h4>
                             <span className="font-mono text-xs font-bold text-black/80 block mt-0.5">
-                              ${prod.price.toFixed(2)}
+                              LKR {prod.price.toLocaleString()}
                             </span>
                           </div>
                           <button

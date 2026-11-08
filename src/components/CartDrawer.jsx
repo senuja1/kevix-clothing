@@ -24,10 +24,10 @@ export function CartDrawer({
 
   const finalSubtotal = rawSubtotal - promoDiscount;
   const isFreeShipping = finalSubtotal >= BRAND_INFO.freeShippingThreshold || finalSubtotal === 0;
-  const shippingAmount = isFreeShipping ? 0 : 20;
+  const shippingAmount = isFreeShipping ? 0 : 350;
   const total = finalSubtotal + shippingAmount;
 
-  const threshold = BRAND_INFO.freeShippingThreshold || 200;
+  const threshold = BRAND_INFO.freeShippingThreshold || 10000;
   const progressPercent = Math.min(100, Math.round((finalSubtotal / threshold) * 100));
   const remainingForFreeShipping = Math.max(0, threshold - finalSubtotal);
 
@@ -52,9 +52,9 @@ export function CartDrawer({
     const lineItems = items
       .map(
         (item) =>
-          `• ${item.name} (${item.size || 'Standard'}) x${item.quantity} — $${(
+          `• ${item.name} (${item.size || 'Standard'}) x${item.quantity} — LKR ${(
             item.price * item.quantity
-          ).toFixed(2)}`
+          ).toLocaleString()}`
       )
       .join('\n');
 
@@ -63,11 +63,11 @@ export function CartDrawer({
 ----------------------------------------
 ${lineItems}
 ----------------------------------------
-*Subtotal:* $${rawSubtotal.toFixed(2)}${
-  appliedPromo ? `\n*Promo (${appliedPromo.code}):* -$${promoDiscount.toFixed(2)}` : ''
+*Subtotal:* LKR ${rawSubtotal.toLocaleString()}${
+  appliedPromo ? `\n*Promo (${appliedPromo.code}):* -LKR ${promoDiscount.toLocaleString()}` : ''
 }
-*Shipping:* ${isFreeShipping ? 'COMPLIMENTARY (FREE)' : `$${shippingAmount}.00`}
-*Total:* $${total.toFixed(2)} USD
+*Shipping:* ${isFreeShipping ? 'COMPLIMENTARY (FREE)' : `LKR ${shippingAmount.toLocaleString()}`}
+*Total:* LKR ${total.toLocaleString()}
 
 Please confirm my order and send payment details. Thank you!`;
 
@@ -129,7 +129,7 @@ Please confirm my order and send payment details. Thank you!`;
                     </span>
                   ) : (
                     <span>
-                      Add <strong className="text-[#1A1A1A] font-mono font-bold">${remainingForFreeShipping.toFixed(2)}</strong> for free shipping
+                      Add <strong className="text-[#1A1A1A] font-mono font-bold">LKR {remainingForFreeShipping.toLocaleString()}</strong> for free shipping
                     </span>
                   )}
                 </span>
@@ -237,7 +237,7 @@ Please confirm my order and send payment details. Thank you!`;
                         </div>
 
                         <span className="text-sm font-bold font-mono text-[#1A1A1A]">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          LKR {(item.price * item.quantity).toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -290,23 +290,23 @@ Please confirm my order and send payment details. Thank you!`;
                 <div className="space-y-1.5 text-xs font-sans text-black/60 pt-1 border-t border-black/5">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span className="text-[#1A1A1A] font-mono font-semibold">${rawSubtotal.toFixed(2)}</span>
+                    <span className="text-[#1A1A1A] font-mono font-semibold">LKR {rawSubtotal.toLocaleString()}</span>
                   </div>
                   {appliedPromo && (
                     <div className="flex justify-between text-emerald-700">
                       <span>Discount ({appliedPromo.percent}%)</span>
-                      <span className="font-mono font-semibold">-${promoDiscount.toFixed(2)}</span>
+                      <span className="font-mono font-semibold">-LKR {promoDiscount.toLocaleString()}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
                     <span>Shipping</span>
                     <span className="text-[#1A1A1A] font-mono font-semibold">
-                      {isFreeShipping ? 'FREE' : `$${shippingAmount}.00`}
+                      {isFreeShipping ? 'FREE' : `LKR ${shippingAmount.toLocaleString()}`}
                     </span>
                   </div>
                   <div className="flex justify-between text-base font-bold text-[#1A1A1A] pt-2 border-t border-black/10">
                     <span>Total</span>
-                    <span className="font-mono">${total.toFixed(2)}</span>
+                    <span className="font-mono">LKR {total.toLocaleString()}</span>
                   </div>
                 </div>
 

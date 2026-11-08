@@ -54,7 +54,7 @@ export function LookbookGrid({ looks, onOpenLookDrawer, onSelectPinItem }) {
                         <div className="text-left font-sans">
                           <div className="text-[10px] text-amber-300 font-mono">{item.category}</div>
                           <div className="text-xs font-bold text-white">{item.name}</div>
-                          <div className="text-xs text-zinc-300 font-mono">${item.price} USD</div>
+                          <div className="text-xs text-zinc-300 font-mono">LKR {Number(item.price).toLocaleString()}</div>
                         </div>
                       </div>
                     </button>
@@ -117,7 +117,7 @@ export function LookbookGrid({ looks, onOpenLookDrawer, onSelectPinItem }) {
 
                         <div className="text-right">
                           <span className="font-mono text-sm font-bold text-white">
-                            ${item.price}
+                            LKR {Number(item.price).toLocaleString()}
                           </span>
                           <div className="flex items-center justify-end text-[11px] text-zinc-400 group-hover:text-white transition-colors mt-0.5">
                             <span>Details</span>

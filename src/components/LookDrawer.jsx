@@ -172,7 +172,7 @@ export function LookDrawer({
                           {piece.name}
                         </h3>
                         <div className="font-sans text-xs text-[#1A1A1A] mt-1 font-medium">
-                          ${piece.price.toFixed(2)}
+                          LKR {piece.price.toLocaleString()}
                         </div>
                       </div>
 
@@ -244,7 +244,7 @@ export function LookDrawer({
                               <span>Added to bag ({currentSize})</span>
                             </>
                           ) : (
-                            <span>Choose size & add piece · ${piece.price.toFixed(2)}</span>
+                            <span>Choose size & add piece · LKR {piece.price.toLocaleString()}</span>
                           )}
                         </button>
                       </motion.div>
@@ -269,7 +269,7 @@ export function LookDrawer({
 
                 <div className="text-right">
                   <span className="font-sans text-lg font-bold text-[#1A1A1A]">
-                    ${totalLookPrice.toFixed(2)}
+                    LKR {totalLookPrice.toLocaleString()}
                   </span>
                 </div>
               </div>

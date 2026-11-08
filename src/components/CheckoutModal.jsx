@@ -82,7 +82,7 @@ export function CheckoutModal({ isOpen, onClose, orderDetails, onClearCart }) {
           </div>
           <div className="flex justify-between text-stone-800 pt-2 border-t border-stone-100 text-sm font-semibold">
             <span>Total Paid:</span>
-            <span className="text-black font-bold">${orderDetails.total.toFixed(2)}</span>
+            <span className="text-black font-bold">LKR {orderDetails.total.toLocaleString()}</span>
           </div>
         </div>
 
