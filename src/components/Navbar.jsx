@@ -2,14 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
-  User, 
-  ShoppingBag, 
   X, 
   ArrowRight, 
   Sparkles, 
-  MessageCircle, 
-  ShieldCheck, 
-  Truck,
   Plus
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -23,7 +18,6 @@ export function Navbar({
 }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef(null);
 
@@ -49,7 +43,6 @@ export function Navbar({
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setIsSearchOpen(false);
-        setIsAccountOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -168,10 +161,10 @@ export function Navbar({
             </Link>
           </nav>
 
-          {/* Right Action Icons: Search, User, Bag (Minimal Outline Suite) */}
+          {/* Right Action Icons: Search */}
           <div className="flex items-center gap-1 sm:gap-2">
             
-            {/* 1. Search Icon Button */}
+            {/* Search Icon Button */}
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
@@ -181,37 +174,6 @@ export function Navbar({
               }`}
             >
               <Search className="w-5 h-5 stroke-[1.6]" />
-            </button>
-
-            {/* 2. User Account / Concierge Icon Button */}
-            <button
-              type="button"
-              onClick={() => setIsAccountOpen(true)}
-              aria-label="Account & Concierge"
-              className={`min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] flex items-center justify-center cursor-pointer transition-all duration-200 hover:opacity-70 active:scale-90 ${
-                hasSolidNav ? 'text-[#1A1A1A]' : 'text-white'
-              }`}
-            >
-              <User className="w-5 h-5 stroke-[1.6]" />
-            </button>
-
-            {/* 3. Shopping Bag Icon Button */}
-            <button
-              type="button"
-              onClick={onOpenCart}
-              aria-label={`Open Shopping Bag (${cartCount} items)`}
-              className={`relative min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] flex items-center justify-center cursor-pointer transition-all duration-200 hover:opacity-70 active:scale-90 ${
-                hasSolidNav ? 'text-[#1A1A1A]' : 'text-white'
-              }`}
-            >
-              <ShoppingBag className="w-5 h-5 stroke-[1.6]" />
-              {cartCount > 0 && (
-                <span className={`absolute top-1 sm:top-1.5 right-1 sm:right-1.5 min-w-[16px] h-4 px-1 rounded-full text-[10px] font-mono font-bold flex items-center justify-center leading-none ${
-                  hasSolidNav ? 'bg-[#1A1A1A] text-white' : 'bg-white text-black'
-                }`}>
-                  {cartCount}
-                </span>
-              )}
             </button>
 
           </div>
@@ -431,128 +393,6 @@ export function Navbar({
                     </div>
                   </div>
                 )}
-
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Interactive VIP Account & Client Concierge Modal */}
-      <AnimatePresence>
-        {isAccountOpen && (
-          <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 select-none">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsAccountOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md"
-            />
-
-            {/* Modal Dialog Card */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: -10 }}
-              transition={{ type: "spring", stiffness: 350, damping: 30 }}
-              className="relative w-full max-w-lg bg-[#FAF6F1] rounded-2xl border border-black/15 shadow-2xl p-6 sm:p-8 flex flex-col gap-6 z-10"
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-black/10">
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-black/50 block">
-                    KevixClothing Client Services
-                  </span>
-                  <h3 className="font-serif text-2xl sm:text-3xl text-[#1A1A1A]">
-                    Account &amp; Concierge
-                  </h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setIsAccountOpen(false)}
-                  className="p-2 rounded-full hover:bg-black/5 text-black/60 hover:text-black cursor-pointer transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Concierge Services & Quick Navigation */}
-              <div className="space-y-4">
-                
-                {/* VIP Personal Styling via WhatsApp */}
-                <a
-                  href="https://wa.me/94771234567?text=Hello%20KevixClothing%2C%20I%20would%20like%20assistance%20with%20sizing%20and%20orders."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-4 rounded-xl bg-white border border-black/10 hover:border-black/30 transition-all group cursor-pointer"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
-                      <MessageCircle className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-sans font-bold text-sm text-[#1A1A1A] group-hover:underline">
-                        VIP WhatsApp Styling
-                      </h4>
-                      <p className="text-black/60 text-xs">
-                        Direct 1-on-1 bespoke sizing &amp; fit advice
-                      </p>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-black/40 group-hover:text-black transition-colors" />
-                </a>
-
-                {/* Navigation Links for Quick Access */}
-                <div className="p-4 rounded-xl bg-white border border-black/10 space-y-2.5">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/50 block mb-2">
-                    Direct Navigation
-                  </span>
-                  
-                  <Link
-                    to="/"
-                    onClick={() => setIsAccountOpen(false)}
-                    className="flex items-center justify-between text-xs font-mono uppercase tracking-wider py-1.5 text-black/75 hover:text-black font-semibold"
-                  >
-                    <span>Runway Stage (2.5D Catwalk)</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-
-                  <Link
-                    to="/collection"
-                    onClick={() => setIsAccountOpen(false)}
-                    className="flex items-center justify-between text-xs font-mono uppercase tracking-wider py-1.5 text-black/75 hover:text-black font-semibold border-t border-black/5"
-                  >
-                    <span>The Collection (12 Silhouettes)</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-
-                  <Link
-                    to="/campaign"
-                    onClick={() => setIsAccountOpen(false)}
-                    className="flex items-center justify-between text-xs font-mono uppercase tracking-wider py-1.5 text-black/75 hover:text-black font-semibold border-t border-black/5"
-                  >
-                    <span>The Campaign Films (4K Studio Reels)</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-
-                {/* Service Highlights */}
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  <div className="flex items-center gap-2.5 p-3 rounded-lg bg-black/5">
-                    <Truck className="w-4 h-4 text-black/70 flex-shrink-0" />
-                    <span className="text-[11px] font-mono text-black/70">
-                      Complimentary over $200
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2.5 p-3 rounded-lg bg-black/5">
-                    <ShieldCheck className="w-4 h-4 text-black/70 flex-shrink-0" />
-                    <span className="text-[11px] font-mono text-black/70">
-                      30-Day Exchanges
-                    </span>
-                  </div>
-                </div>
 
               </div>
             </motion.div>
