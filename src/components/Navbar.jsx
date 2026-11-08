@@ -63,7 +63,6 @@ export function Navbar({
   // Close modals when navigating
   useEffect(() => {
     setIsSearchOpen(false);
-    setIsAccountOpen(false);
   }, [location.pathname]);
 
   // On non-home pages (like /collection or /campaign), always provide high contrast background
