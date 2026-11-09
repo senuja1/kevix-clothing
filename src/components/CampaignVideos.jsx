@@ -20,7 +20,7 @@ export function CampaignVideos({ onSelectLookAndShop }) {
       src: "/videos/reel_02.mp4",
       poster: "/videos/thumb_2.jpg",
       title: "Look 01 · Indigo Sculpt",
-      subtitle: "Zip up corset top & raw denim drape",
+      subtitle: "Zip up corset top & washed denim drape",
       lookIndex: 0,
       tag: "ZIP UP CORSET TOP"
     },

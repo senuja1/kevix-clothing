@@ -58,6 +58,11 @@ export function CartDrawer({
       )
       .join('\n');
 
+    const hasCustomItems = items.some((item) => item.size === 'Custom');
+    const customPrompt = hasCustomItems
+      ? '\n\n*Custom Sizing Details:*\nI will reply with my preferred measurements (waist, length, bust) for the custom pieces.'
+      : '';
+
     const messageText = 
 `*NEW ORDER — ${BRAND_INFO.name.toUpperCase()}*
 ----------------------------------------
@@ -67,7 +72,7 @@ ${lineItems}
   appliedPromo ? `\n*Promo (${appliedPromo.code}):* -LKR ${promoDiscount.toLocaleString()}` : ''
 }
 *Shipping:* ${isFreeShipping ? 'COMPLIMENTARY (FREE)' : `LKR ${shippingAmount.toLocaleString()}`}
-*Total:* LKR ${total.toLocaleString()}
+*Total:* LKR ${total.toLocaleString()}${customPrompt}
 
 Please confirm my order and send payment details. Thank you!`;
 
@@ -202,8 +207,12 @@ Please confirm my order and send payment details. Thank you!`;
 
                       {/* Size Badge */}
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-[#FAF6F1] border border-black/10 text-[#1A1A1A] font-bold">
-                          Size: {item.size || 'OS'}
+                        <span className={`text-[11px] font-mono px-2 py-0.5 rounded border font-bold ${
+                          item.size === 'Custom'
+                            ? 'bg-emerald-50 border-emerald-500/30 text-emerald-900'
+                            : 'bg-[#FAF6F1] border-black/10 text-[#1A1A1A]'
+                        }`}>
+                          Size: {item.size || 'OS'}{item.size === 'Custom' ? ' (Custom)' : ''}
                         </span>
                         {item.brand && (
                           <span className="text-[10px] text-black/50 font-mono uppercase">

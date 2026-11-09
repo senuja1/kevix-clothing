@@ -33,7 +33,7 @@ export function CollectionPage({ onAddToCart }) {
         </h1>
 
         <p className="max-w-2xl mx-auto text-center text-base text-neutral-600 leading-relaxed mt-6 mb-12">
-          Every garment meticulously crafted with architectural proportions, rigid raw selvedge denim, sculpted corsets, and heavyweight cotton essentials.
+          Every garment meticulously crafted with architectural proportions, authentic washed selvedge denim, sculpted corsets, and heavyweight cotton essentials.
         </p>
       </div>
 

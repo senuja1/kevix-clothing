@@ -26,7 +26,7 @@ export const LOOKS_DATA = [
     id: "look-01",
     number: "01",
     title: "Indigo Sculpt",
-    subtitle: "Sculpted raw indigo denim corset crop top with brass zipper.",
+    subtitle: "Sculpted washed indigo denim corset crop top with brass zipper.",
     modelImage: "/models/model_01_crop_front.jpg",
     category: "Crop Tops",
     pieces: [
@@ -38,14 +38,14 @@ export const LOOKS_DATA = [
         price: 3500,
         thumbnail: "/products/crop_top_denim.jpg",
         hotspot: { x: 50, y: 32 },
+        canCustomize: true,
         sizes: [
-          { label: "XS", inStock: true },
           { label: "S", inStock: true },
           { label: "M", inStock: true },
           { label: "L", inStock: true },
-          { label: "XL", inStock: false }
+          { label: "Custom", inStock: true }
         ],
-        details: "Sculpted raw denim corset top featuring a heavy brass front zipper and contrast gold topstitching."
+        details: "Sculpted washed denim corset top featuring a heavy brass front zipper and contrast gold topstitching. Custom sizing available."
       }
     ]
   },
@@ -65,11 +65,11 @@ export const LOOKS_DATA = [
         price: 2300,
         thumbnail: "/products/kvx_classic_tee.jpg",
         hotspot: { x: 50, y: 38 },
+        canCustomize: false,
         sizes: [
           { label: "S", inStock: true },
           { label: "M", inStock: true },
-          { label: "L", inStock: true },
-          { label: "XL", inStock: true }
+          { label: "L", inStock: true }
         ],
         details: "Heavyweight 280gsm organic jersey with crisp white chest embroidery and cropped boxy cut."
       },
@@ -81,14 +81,14 @@ export const LOOKS_DATA = [
         price: 5600,
         thumbnail: "/products/kvx_wide_denim.jpg",
         hotspot: { x: 48, y: 68 },
+        canCustomize: true,
         sizes: [
           { label: "28", inStock: true },
           { label: "30", inStock: true },
           { label: "32", inStock: true },
-          { label: "34", inStock: true },
-          { label: "36", inStock: false }
+          { label: "Custom", inStock: true }
         ],
-        details: "True waist baggy unisex fit in rigid indigo selvedge denim with tobacco contrast stitching."
+        details: "True waist baggy unisex fit in washed indigo selvedge denim with tobacco contrast stitching. Custom sizing available."
       }
     ]
   },
@@ -108,11 +108,11 @@ export const LOOKS_DATA = [
         price: 2300,
         thumbnail: "/products/kvx_white_tee.jpg",
         hotspot: { x: 50, y: 34 },
+        canCustomize: false,
         sizes: [
           { label: "S", inStock: true },
           { label: "M", inStock: true },
-          { label: "L", inStock: true },
-          { label: "XL", inStock: false }
+          { label: "L", inStock: true }
         ],
         details: "260gsm combed cotton crewneck with clean cropped boxy drape and subtle chest branding."
       },
@@ -124,13 +124,14 @@ export const LOOKS_DATA = [
         price: 5600,
         thumbnail: "/products/selvedge_loose_denim.jpg",
         hotspot: { x: 50, y: 66 },
+        canCustomize: true,
         sizes: [
           { label: "28", inStock: true },
           { label: "30", inStock: true },
           { label: "32", inStock: true },
-          { label: "34", inStock: true }
+          { label: "Custom", inStock: true }
         ],
-        details: "Authentic mid-blue wash true waist baggy unisex denim with reinforced double-needle seams."
+        details: "Authentic mid-blue washed true waist baggy unisex denim with reinforced double-needle seams. Custom sizing available."
       }
     ]
   },
@@ -138,7 +139,7 @@ export const LOOKS_DATA = [
     id: "look-04",
     number: "04",
     title: "Tailored Flared",
-    subtitle: "Sculpted raw denim corset top with high-neck collar and contour paneling.",
+    subtitle: "Sculpted washed denim corset top with high-neck collar and contour paneling.",
     modelImage: "/models/model_04_crop_side.jpg",
     category: "Crop Tops",
     pieces: [
@@ -150,21 +151,22 @@ export const LOOKS_DATA = [
         price: 3500,
         thumbnail: "/products/crop_corset_denim.jpg",
         hotspot: { x: 48, y: 33 },
+        canCustomize: true,
         sizes: [
-          { label: "XS", inStock: true },
           { label: "S", inStock: true },
           { label: "M", inStock: true },
-          { label: "L", inStock: true }
+          { label: "L", inStock: true },
+          { label: "Custom", inStock: true }
         ],
-        details: "High-neck collar with front zip closure and ergonomic curved corset paneling for a contoured fit."
+        details: "High-neck collar with front zip closure and ergonomic curved corset paneling for a contoured fit. Custom sizing available."
       }
     ]
   },
   {
     id: "look-05",
     number: "05",
-    title: "Raw Waist Selvedge",
-    subtitle: "True waist baggy jean in rigid dark indigo selvedge denim.",
+    title: "Washed Waist Selvedge",
+    subtitle: "True waist baggy jean in washed dark indigo selvedge denim.",
     modelImage: "/models/model_05_baggy_raw.jpg",
     category: "Denims",
     pieces: [
@@ -176,14 +178,14 @@ export const LOOKS_DATA = [
         price: 5600,
         thumbnail: "/products/raw_waist_baggy.jpg",
         hotspot: { x: 50, y: 70 },
+        canCustomize: true,
         sizes: [
           { label: "28", inStock: true },
           { label: "30", inStock: true },
           { label: "32", inStock: true },
-          { label: "34", inStock: true },
-          { label: "36", inStock: true }
+          { label: "Custom", inStock: true }
         ],
-        details: "Authentic true waist baggy unisex fit with heavy gold topstitching, deep raw indigo wash, and custom brass hardware."
+        details: "Authentic true waist baggy unisex fit with heavy gold topstitching, washed dark indigo, and custom brass hardware. Custom sizing available."
       }
     ]
   }
@@ -205,9 +207,10 @@ export const ARCHIVE_PRODUCTS = [
     price: 5600,
     primaryImage: "/products/kvx_wide_denim.jpg",
     secondaryImage: "/models/model_02_denim_blacktee.jpg",
-    sizes: ["28", "30", "32", "34", "36"],
-    tag: "Bestseller",
-    details: "Iconic true waist baggy unisex silhouette in rigid raw indigo selvedge with tobacco stitching."
+    sizes: ["28", "30", "32", "Custom"],
+    canCustomize: true,
+    tag: "Bestseller · Custom Available",
+    details: "Iconic true waist baggy unisex silhouette in washed indigo selvedge with tobacco stitching. Custom sizing available."
   },
   {
     id: "prod-corset-front",
@@ -217,9 +220,10 @@ export const ARCHIVE_PRODUCTS = [
     price: 3500,
     primaryImage: "/products/crop_top_denim.jpg",
     secondaryImage: "/models/model_01_crop_front.jpg",
-    sizes: ["XS", "S", "M", "L", "XL"],
-    tag: "Runway Piece",
-    details: "Sculpted raw denim corset top with heavy antique brass front zipper and contrast gold topstitching."
+    sizes: ["S", "M", "L", "Custom"],
+    canCustomize: true,
+    tag: "Runway Piece · Custom Available",
+    details: "Sculpted washed denim corset top with heavy antique brass front zipper and contrast gold topstitching. Custom sizing available."
   },
   {
     id: "prod-tee-black",
@@ -229,7 +233,8 @@ export const ARCHIVE_PRODUCTS = [
     price: 2300,
     primaryImage: "/products/kvx_classic_tee.jpg",
     secondaryImage: "/models/model_02_denim_blacktee.jpg",
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L"],
+    canCustomize: false,
     tag: "280gsm Heavyweight",
     details: "Heavyweight 280gsm organic jersey with crisp chest embroidery and structured cropped boxy cut."
   },
@@ -241,7 +246,8 @@ export const ARCHIVE_PRODUCTS = [
     price: 2300,
     primaryImage: "/products/kvx_white_tee.jpg",
     secondaryImage: "/models/model_03_denim_whitetee.jpg",
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L"],
+    canCustomize: false,
     tag: "Combed Cotton",
     details: "260gsm combed organic cotton crewneck with clean drape and minimal tonal chest signature."
   }

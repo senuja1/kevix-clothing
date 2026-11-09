@@ -31,8 +31,8 @@ export function CampaignPage({ onAddToCart }) {
   const campaignFilms = [
     {
       id: "film-04",
-      title: "Director's Cut · Raw Denim in Motion",
-      subtitle: "Full-motion drape test of unwashed raw selvedge denim in natural studio light.",
+      title: "Director's Cut · Washed Denim in Motion",
+      subtitle: "Full-motion drape test of washed selvedge denim in natural studio light.",
       videoSrc: "/videos/campaign_feature.mp4",
       poster: "/videos/thumb_4.jpg",
       duration: "0:12",
@@ -50,7 +50,7 @@ export function CampaignPage({ onAddToCart }) {
     {
       id: "film-01",
       title: "Indigo Sculpt · Front & Profile",
-      subtitle: "Sculpted raw denim corset crop top with brass zipper.",
+      subtitle: "Sculpted washed denim corset crop top with brass zipper.",
       videoSrc: "/videos/reel_02.mp4",
       poster: "/videos/thumb_2.jpg",
       duration: "0:15",
@@ -237,7 +237,7 @@ export function CampaignPage({ onAddToCart }) {
         </h1>
 
         <p className="max-w-2xl mx-auto text-center text-base text-neutral-600 leading-relaxed mt-6 mb-12">
-          Raw selvedge denim in motion. Watch the true weight, natural puddle drape, and brass accents recorded directly on models under authentic studio lighting.
+          Washed selvedge denim in motion. Watch the true weight, natural puddle drape, and brass accents recorded directly on models under authentic studio lighting.
         </p>
       </div>
 
@@ -519,10 +519,10 @@ export function CampaignPage({ onAddToCart }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs sm:text-sm font-sans text-black/70 leading-relaxed divide-y md:divide-y-0 md:divide-x divide-black/10 pt-2">
             <div className="space-y-1 md:pr-6 pt-3 md:pt-0">
               <h5 className="font-mono font-bold uppercase tracking-wider text-[#1A1A1A] text-xs">
-                Shuttle Loom Denim
+                Washed Selvedge Denim
               </h5>
               <p>
-                Spun from unbleached long-staple cotton yarn and woven slowly on 1960s Toyoda shuttle looms to retain maximum natural ring-spun texture and authentic selvedge ID line.
+                Crafted from authentic washed selvedge denim woven on shuttle looms to retain maximum natural ring-spun drape, softened hand-feel, and genuine selvedge ID line.
               </p>
             </div>
 

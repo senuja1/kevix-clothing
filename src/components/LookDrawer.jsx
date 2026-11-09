@@ -200,8 +200,13 @@ export function LookDrawer({
                         transition={{ duration: 0.25 }}
                         className="mt-4 pt-3 border-t border-[rgba(26,26,26,0.08)] space-y-3"
                       >
-                        <div className="text-[11px] font-semibold text-[#8C8680] uppercase tracking-wider">
-                          Size
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-[#8C8680] uppercase tracking-wider">
+                          <span>Size</span>
+                          {piece.canCustomize && (
+                            <span className="text-[10px] font-mono text-emerald-800 normal-case font-medium">
+                              ✦ Custom sizing available
+                            </span>
+                          )}
                         </div>
 
                         {/* Circular Size Pills */}
@@ -215,7 +220,7 @@ export function LookDrawer({
                                 key={s.label}
                                 disabled={isOutOfStock}
                                 onClick={() => handleSelectSize(piece.id, s.label)}
-                                className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold transition-all relative ${
+                                className={`min-w-[40px] h-10 px-2.5 rounded-full flex items-center justify-center text-xs font-semibold transition-all relative ${
                                   isOutOfStock
                                     ? 'text-[#8C8680]/50 border border-[rgba(26,26,26,0.12)] cursor-not-allowed line-through'
                                     : isSelected

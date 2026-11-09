@@ -189,8 +189,13 @@ export function ShopPanel({
                     transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                     className="overflow-hidden pt-4 mt-3 border-t border-black/5"
                   >
-                    <div className="text-xs uppercase tracking-wider text-black/60 font-semibold mb-2.5">
-                      Size
+                    <div className="flex items-center justify-between text-xs uppercase tracking-wider text-black/60 font-semibold mb-2.5">
+                      <span>Size</span>
+                      {piece.canCustomize && (
+                        <span className="text-[11px] font-mono text-emerald-800 normal-case font-medium">
+                          ✦ Custom sizing available
+                        </span>
+                      )}
                     </div>
 
                     {/* Circular Size Buttons */}
@@ -205,7 +210,7 @@ export function ShopPanel({
                             type="button"
                             disabled={!inStock}
                             onClick={() => handleSelectSize(piece.id, s.label)}
-                            className={`w-11 h-11 rounded-full text-sm font-semibold transition flex items-center justify-center relative cursor-pointer ${
+                            className={`min-w-[44px] h-11 px-3 rounded-full text-xs font-semibold transition flex items-center justify-center relative cursor-pointer ${
                               !inStock
                                 ? 'opacity-40 cursor-not-allowed bg-black/5 border border-black/10 text-black/40'
                                 : isSelected

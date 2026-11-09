@@ -72,7 +72,7 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
             </h2>
 
             <p className="text-black/60 text-sm sm:text-base mt-2 max-w-xl font-sans text-center">
-              Precision-cut raw selvedge denims, structured corsets, and heavyweight cotton essentials constructed for architectural drape.
+              Precision-cut washed selvedge denims, structured corsets, and heavyweight cotton essentials constructed for architectural drape.
             </p>
           </div>
         )}
@@ -263,6 +263,12 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
                             {product.brand}
                           </span>
                         </div>
+                        {product.canCustomize && (
+                          <div className="mt-1 flex items-center gap-1 text-[10px] font-mono font-medium text-emerald-800">
+                            <span>✦</span>
+                            <span>Custom sizing available</span>
+                          </div>
+                        )}
                       </div>
 
                     </motion.div>
@@ -312,21 +318,37 @@ export function ProductGrid({ onAddToCart, hideHeader = false }) {
               </div>
 
               <div className="py-4">
-                <span className="text-xs uppercase tracking-wider font-mono text-black/60 block font-bold mb-2">
-                  Select Size to Add
-                </span>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs uppercase tracking-wider font-mono text-black/60 block font-bold">
+                    Select Size to Add
+                  </span>
+                  {selectedMobileProduct.canCustomize && (
+                    <span className="text-[11px] font-mono text-emerald-800 font-semibold">
+                      ✦ Custom sizing available
+                    </span>
+                  )}
+                </div>
                 <div className="grid grid-cols-4 gap-2">
                   {selectedMobileProduct.sizes.map((size) => (
                     <button
                       key={size}
                       type="button"
                       onClick={() => handleQuickAdd(selectedMobileProduct, size)}
-                      className="py-3 px-2 rounded-xl border border-black/15 bg-white text-sm font-mono font-bold text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white transition-all active:scale-95 shadow-xs flex items-center justify-center min-h-[44px] cursor-pointer"
+                      className={`py-3 px-2 rounded-xl border text-sm font-mono font-bold transition-all active:scale-95 shadow-xs flex items-center justify-center min-h-[44px] cursor-pointer ${
+                        size === 'Custom'
+                          ? 'border-emerald-600/40 bg-emerald-50/50 text-emerald-900 hover:bg-[#1A1A1A] hover:text-white'
+                          : 'border-black/15 bg-white text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white'
+                      }`}
                     >
                       {size}
                     </button>
                   ))}
                 </div>
+                {selectedMobileProduct.canCustomize && (
+                  <p className="text-[11px] font-sans text-black/55 mt-2.5">
+                    Select <strong>Custom</strong> for custom waist, length, or bust sizing upon order.
+                  </p>
+                )}
               </div>
 
               <button

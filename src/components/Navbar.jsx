@@ -82,7 +82,7 @@ export function Navbar({
       });
 
   const popularSearches = [
-    "Raw Selvedge Denim",
+    "Washed Selvedge Denim",
     "Zip Up Corset",
     "Cropped Boxy Tee",
     "Baggy Jean",
@@ -253,7 +253,7 @@ export function Navbar({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search raw selvedge, corsets, tees, essentials..."
+                  placeholder="Search washed selvedge, corsets, tees, essentials..."
                   className="w-full bg-transparent text-[#1A1A1A] text-base sm:text-lg font-sans placeholder:text-black/35 focus:outline-hidden"
                 />
                 {searchQuery && (
