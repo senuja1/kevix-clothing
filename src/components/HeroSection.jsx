@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Pause, Play } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const PORTRAIT_QUERY = '(max-aspect-ratio: 1/1)';
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
@@ -15,12 +15,9 @@ export function HeroSection() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia(REDUCED_MOTION_QUERY).matches : false
   );
-  // null = follow system motion preference; boolean = explicit user override
-  const [userPaused, setUserPaused] = useState(null);
   const [isInView, setIsInView] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
 
-  const shouldPlay = userPaused !== null ? !userPaused : !prefersReducedMotion;
+  const shouldPlay = !prefersReducedMotion;
 
   // Listen for viewport aspect-ratio changes (device rotation, resize) and reduced-motion changes
   useEffect(() => {
@@ -66,9 +63,7 @@ export function HeroSection() {
 
     const attemptPlay = () => {
       if (!videoRef.current) return;
-      videoRef.current.play().catch(() => {
-        setIsPlaying(false);
-      });
+      videoRef.current.play().catch(() => {});
     };
 
     if (shouldPlay && isInView) {
@@ -86,21 +81,6 @@ export function HeroSection() {
     window.addEventListener('touchstart', unlockOnTouch, { once: true, passive: true });
     return () => window.removeEventListener('touchstart', unlockOnTouch);
   }, [shouldPlay, isInView, isPortrait]);
-
-  const handleTogglePlayback = (e) => {
-    e.stopPropagation();
-    const vid = videoRef.current;
-    if (!vid) return;
-
-    if (isPlaying) {
-      setUserPaused(true);
-      vid.pause();
-    } else {
-      setUserPaused(false);
-      vid.muted = true;
-      vid.play().catch(() => {});
-    }
-  };
 
   const handleScrollToCatwalk = () => {
     const el = document.getElementById('catwalk-stage');
@@ -150,8 +130,6 @@ export function HeroSection() {
           preload="auto"
           aria-hidden="true"
           tabIndex={-1}
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
           className="w-full h-full object-cover object-center pointer-events-none"
         >
           <source src={webmSrc} type="video/webm" />
@@ -182,20 +160,6 @@ export function HeroSection() {
           />
         </button>
       </motion.div>
-
-      {/* Accessible Background Video Playback Control (WCAG 2.2.2 Pause, Stop, Hide) */}
-      <button
-        type="button"
-        onClick={handleTogglePlayback}
-        aria-label={isPlaying ? 'Pause background video' : 'Play background video'}
-        className="absolute bottom-8 right-5 sm:bottom-12 sm:right-8 z-20 min-w-[44px] min-h-[44px] rounded-full bg-black/45 hover:bg-black/75 backdrop-blur-md border border-white/20 text-white/85 hover:text-white flex items-center justify-center transition-colors duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer shadow-lg"
-      >
-        {isPlaying ? (
-          <Pause aria-hidden="true" className="w-4 h-4 fill-current" />
-        ) : (
-          <Play aria-hidden="true" className="w-4 h-4 fill-current ml-0.5" />
-        )}
-      </button>
     </section>
   );
 }

@@ -1,38 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageSquare, Check } from 'lucide-react';
+import { Check, ExternalLink, MessageSquare, X } from 'lucide-react';
 import { KevixWordmark } from './KevixWordmark';
-import { BeBetterEverydayWordmark } from './BeBetterEverydayWordmark';
 
-function InstagramIcon({ className = "w-4 h-4" }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-    </svg>
-  );
-}
-
-function YouTubeIcon({ className = "w-4 h-4" }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="currentColor">
-      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-    </svg>
-  );
-}
-
-function LinkedInIcon({ className = "w-4 h-4" }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="currentColor">
-      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-    </svg>
-  );
-}
+const LEGAL_CONTENT = {
+  privacy: {
+    title: 'Privacy Policy',
+    body: [
+      'KevixClothing collects only the details you voluntarily share when subscribing to drop notifications or placing an order via WhatsApp (such as your name, delivery address, contact number, and custom sizing measurements).',
+      'Your details are used strictly to process, tailor, and deliver your garments and provide order support. We never sell or rent customer information to third parties.',
+      'To request removal or correction of your contact details at any time, message our atelier team via WhatsApp Live Chat.'
+    ]
+  },
+  terms: {
+    title: 'Terms & Conditions',
+    body: [
+      'All prices on KevixClothing are listed in Sri Lankan Rupees (LKR). Standard islandwide courier delivery is LKR 350, with complimentary shipping on orders of LKR 10,000 or more.',
+      'Custom-sized orders (available for True Waist Baggy Jeans and Zip Up Corset Tops) are tailored to the measurements you confirm with our team and are non-refundable once cutting begins.',
+      'Exchanges on unworn standard-size garments with original tags intact may be requested within 7 days of delivery via WhatsApp Live Chat.'
+    ]
+  }
+};
 
 export function Footer() {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [activeLegal, setActiveLegal] = useState(null);
+  const legalDialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = legalDialogRef.current;
+    if (!dialog) return;
+
+    if (activeLegal) {
+      if (!dialog.open) dialog.showModal();
+    } else if (dialog.open) {
+      dialog.close();
+    }
+  }, [activeLegal]);
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -46,19 +51,20 @@ export function Footer() {
   };
 
   const handleLiveChat = () => {
-    const msg = encodeURIComponent("Hello KevixClothing! I have an inquiry about the FW26 Archive.");
+    const msg = encodeURIComponent('Hello KevixClothing! I have an inquiry about the FW26 Archive.');
     window.open(`https://wa.me/?text=${msg}`, '_blank', 'noopener,noreferrer');
   };
 
+  const currentDoc = activeLegal ? LEGAL_CONTENT[activeLegal] : null;
+
   return (
     <footer className="w-full bg-black text-white select-none overflow-hidden">
-      
       {/* 1. TOP EDGE-TO-EDGE GEOMETRIC WORDMARK */}
       <div className="w-full pt-[clamp(1rem,2.5vw,2.25rem)] pb-[clamp(0.5rem,1.5vw,1.25rem)] px-[1.8%] flex items-center justify-center overflow-hidden">
         <div className="w-full flex items-center justify-center">
-          <KevixWordmark 
-            mode="condensed" 
-            className="w-full h-auto fill-white select-none" 
+          <KevixWordmark
+            mode="condensed"
+            className="w-full h-auto fill-white select-none"
           />
         </div>
       </div>
@@ -66,7 +72,6 @@ export function Footer() {
       {/* 2. PROPORTIONAL 3-COLUMN INFORMATION ROW (Preserves exact layout across all viewport sizes) */}
       <div className="w-full px-[3%] pt-[clamp(1rem,2.8vw,2.5rem)] pb-[clamp(1.25rem,3.5vw,3.25rem)]">
         <div className="w-full flex flex-row items-start">
-          
           {/* Column 1: Sign up now (0% -> 34.1% width) */}
           <div className="w-[38%] sm:w-[34.1%] pr-[3.5%] sm:pr-[4.4%] flex-shrink-0">
             <h3 className="font-sans italic font-bold text-[clamp(0.72rem,1.35vw,0.95rem)] text-white tracking-tight leading-snug">
@@ -84,17 +89,19 @@ export function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email address"
+                  aria-label="Email address"
+                  autoComplete="email"
                   required
                   className="bg-transparent text-[clamp(0.55rem,0.95vw,0.75rem)] text-white placeholder-white/40 focus:outline-none w-full font-sans min-w-0"
                 />
-                
+
                 <button
                   type="submit"
                   className="text-[clamp(0.55rem,0.95vw,0.75rem)] font-bold text-white whitespace-nowrap hover:text-white/75 transition-colors cursor-pointer flex items-center justify-center flex-shrink-0"
                 >
                   {isSubscribed ? (
                     <span className="flex items-center gap-1 text-emerald-400">
-                      <Check className="w-3 h-3" />
+                      <Check aria-hidden="true" className="w-3 h-3" />
                       <span>Subscribed</span>
                     </span>
                   ) : (
@@ -105,7 +112,7 @@ export function Footer() {
             </form>
           </div>
 
-          {/* Column 2: Shop (Starts at ~37.1% of footer width) */}
+          {/* Column 2: Shop */}
           <div className="w-[24%] sm:w-[13.2%] pr-[2%] flex-shrink-0">
             <h4 className="text-[clamp(0.55rem,0.9vw,0.7rem)] font-sans font-medium text-white/50 mb-[clamp(0.5rem,1.2vw,1rem)]">
               Shop
@@ -139,7 +146,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Information (Starts at ~49.5% of footer width) */}
+          {/* Column 3: Information */}
           <div className="w-[38%] sm:w-[22%] flex-shrink-0">
             <h4 className="text-[clamp(0.55rem,0.9vw,0.7rem)] font-sans font-medium text-white/50 mb-[clamp(0.5rem,1.2vw,1rem)]">
               Information
@@ -177,68 +184,111 @@ export function Footer() {
               </li>
             </ul>
           </div>
-
         </div>
       </div>
 
-      {/* 3. BOTTOM BAR: Socials (Left), Tagline (Center), Copyright & Live Chat (Right) */}
-      <div className="w-full px-[3%] pt-[clamp(0.5rem,1.2vw,1rem)] pb-[clamp(0.85rem,1.8vw,1.5rem)] flex flex-row items-center justify-between relative">
-        
-        {/* Left: Minimalist Social Icons */}
-        <div className="flex items-center gap-[clamp(0.5rem,1.1vw,1rem)] text-white/60 z-10">
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className="hover:text-white transition-colors"
-          >
-            <InstagramIcon className="w-[clamp(11px,1.2vw,15px)] h-[clamp(11px,1.2vw,15px)]" />
-          </a>
-          <a
-            href="https://youtube.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="YouTube"
-            className="hover:text-white transition-colors"
-          >
-            <YouTubeIcon className="w-[clamp(11px,1.2vw,15px)] h-[clamp(11px,1.2vw,15px)]" />
-          </a>
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="hover:text-white transition-colors"
-          >
-            <LinkedInIcon className="w-[clamp(11px,1.2vw,15px)] h-[clamp(11px,1.2vw,15px)]" />
-          </a>
-        </div>
+      {/* 3. BOTTOM LEGAL, COMMUNITY & DEVELOPER CREDIT BAR */}
+      <div className="w-full px-[3%]">
+        <div className="w-full border-t border-white/10 pt-[clamp(1.1rem,2vw,1.65rem)] pb-[clamp(1.25rem,2.4vw,2rem)] flex flex-col gap-3">
+          {/* Copyright Row */}
+          <p className="text-[11px] sm:text-xs font-sans text-white/45 tracking-wide">
+            © 2026 KEVIXCLOTHING. All Rights Reserved.
+          </p>
 
-        {/* Center: Stylish Geometric High-Fashion Tagline (Mathematically Centered) */}
-        <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none">
-          <div className="flex items-center transform -skew-x-[11deg] drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-            <BeBetterEverydayWordmark className="h-[clamp(8px,1.05vw,13px)] w-auto fill-white select-none" />
+          {/* Dot-Separated Legal, Social & Developer Links */}
+          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2 text-[11px] sm:text-xs font-sans leading-relaxed">
+            <button
+              type="button"
+              onClick={() => setActiveLegal('privacy')}
+              className="text-white/90 hover:text-white font-medium transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white rounded-xs"
+            >
+              Privacy Policy
+            </button>
+
+            <span aria-hidden="true" className="text-white/30">•</span>
+
+            <button
+              type="button"
+              onClick={() => setActiveLegal('terms')}
+              className="text-white/90 hover:text-white font-medium transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white rounded-xs"
+            >
+              Terms &amp; Conditions
+            </button>
+
+            <span aria-hidden="true" className="text-white/30">•</span>
+
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-sky-400 hover:text-sky-300 underline underline-offset-4 decoration-sky-400/50 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 rounded-xs"
+            >
+              <span>Instagram Community</span>
+              <ExternalLink aria-hidden="true" className="w-3 h-3 shrink-0" />
+            </a>
+
+            <span aria-hidden="true" className="hidden sm:inline text-white/30">•</span>
+
+            <button
+              type="button"
+              onClick={handleLiveChat}
+              className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-medium transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 rounded-xs"
+            >
+              <MessageSquare aria-hidden="true" className="w-3 h-3 shrink-0" />
+              <span>WhatsApp Live Chat</span>
+              <ExternalLink aria-hidden="true" className="w-3 h-3 shrink-0" />
+            </button>
+
+            <span aria-hidden="true" className="text-white/30">•</span>
+
+            <a
+              href="https://www.vasterglobal.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-1 text-white/55 hover:text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white rounded-xs"
+            >
+              <span>Developed by</span>
+              <strong className="font-semibold text-white">VasterGlobal</strong>
+              <ExternalLink aria-hidden="true" className="w-3 h-3 shrink-0 text-white/50 group-hover:text-white transition-colors" />
+            </a>
           </div>
         </div>
-
-        {/* Right: Copyright & Live Chat Pill Button */}
-        <div className="flex items-center gap-[clamp(0.4rem,1vw,0.85rem)] text-[clamp(0.5rem,0.85vw,0.7rem)] font-sans text-white/45 z-10">
-          <span className="whitespace-nowrap">© 2026 KevixClothing</span>
-
-          {/* Live Chat Pill Button */}
-          <button
-            type="button"
-            onClick={handleLiveChat}
-            className="inline-flex items-center gap-[clamp(0.3rem,0.6vw,0.5rem)] px-[clamp(0.55rem,1.2vw,1rem)] py-[clamp(0.3rem,0.65vw,0.55rem)] rounded-full bg-[#1C1C1E] hover:bg-[#2A2A2D] text-[clamp(0.55rem,0.9vw,0.75rem)] font-sans font-medium text-white transition-all active:scale-95 cursor-pointer shadow-md"
-          >
-            <MessageSquare className="w-[clamp(10px,1vw,14px)] h-[clamp(10px,1vw,14px)]" />
-            <span className="whitespace-nowrap">Live chat</span>
-          </button>
-        </div>
-
       </div>
 
+      {/* Native Accessible Legal Policy Dialog */}
+      <dialog
+        ref={legalDialogRef}
+        aria-labelledby="footer-legal-title"
+        closedby="any"
+        onClose={() => setActiveLegal(null)}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setActiveLegal(null);
+        }}
+        className="m-auto w-[92vw] max-w-lg rounded-2xl bg-[#111113] border border-white/15 text-white p-0 shadow-2xl backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+      >
+        {currentDoc && (
+          <div className="p-6 sm:p-8 space-y-4">
+            <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
+              <h2 id="footer-legal-title" className="font-serif text-2xl text-white tracking-tight">
+                {currentDoc.title}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setActiveLegal(null)}
+                aria-label={`Close ${currentDoc.title}`}
+                className="min-w-[44px] min-h-[44px] rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-white/80 hover:text-white flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                <X aria-hidden="true" className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-3 text-sm text-white/75 font-sans leading-relaxed">
+              {currentDoc.body.map((paragraph, idx) => (
+                <p key={idx}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        )}
+      </dialog>
     </footer>
   );
 }
