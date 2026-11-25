@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, MessageCircle, Truck } from 'lucide-react';
+import { X, Trash2, Plus, Minus, ShieldCheck, MessageCircle, Truck } from 'lucide-react';
 import { BRAND_INFO } from '../data/looksData';
 
 export function CartDrawer({
@@ -8,8 +8,7 @@ export function CartDrawer({
   onClose,
   items,
   onUpdateQuantity,
-  onRemoveItem,
-  onCheckout
+  onRemoveItem
 }) {
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState(null);
@@ -49,35 +48,61 @@ export function CartDrawer({
   const handleWhatsAppOrder = () => {
     if (items.length === 0) return;
 
+    const totalPieces = items.reduce((acc, item) => acc + item.quantity, 0);
+
     const lineItems = items
-      .map(
-        (item) =>
-          `• ${item.name} (${item.size || 'Standard'}) x${item.quantity} — LKR ${(
-            item.price * item.quantity
-          ).toLocaleString()}`
-      )
-      .join('\n');
+      .map((item, idx) => {
+        const sizeLabel =
+          item.size === 'Custom'
+            ? 'Custom (Tailored Measurements)'
+            : item.size || 'Standard';
+        const collectionRef = item.lookNumber
+          ? item.lookNumber === 'ARCHIVE'
+            ? `Collection${item.lookTitle ? ` · ${item.lookTitle}` : ''}`
+            : item.lookNumber === 'CAMPAIGN'
+            ? 'Campaign Film'
+            : `Look ${item.lookNumber}${item.lookTitle ? ` · ${item.lookTitle}` : ''}`
+          : BRAND_INFO.collection;
+        const unitPrice = `LKR ${Number(item.price).toLocaleString()}`;
+        const lineTotal = `LKR ${(item.price * item.quantity).toLocaleString()}`;
+
+        return [
+          `${idx + 1}. *${item.name}*`,
+          `   • Collection: ${collectionRef}`,
+          `   • Size: ${sizeLabel}`,
+          `   • Qty: ${item.quantity} × ${unitPrice} = ${lineTotal}`
+        ].join('\n');
+      })
+      .join('\n\n');
 
     const hasCustomItems = items.some((item) => item.size === 'Custom');
     const customPrompt = hasCustomItems
-      ? '\n\n*Custom Sizing Details:*\nI will reply with my preferred measurements (waist, length, bust) for the custom pieces.'
+      ? '\n\n*Custom Measurements (for Custom size items):*\n• Waist / Length / Bust: '
       : '';
 
-    const messageText = 
-`*NEW ORDER — ${BRAND_INFO.name.toUpperCase()}*
+    const messageText = `*NEW ORDER — ${BRAND_INFO.name.toUpperCase()}*
 ----------------------------------------
+*Items Ordered (${totalPieces} ${totalPieces === 1 ? 'piece' : 'pieces'}):*
+
 ${lineItems}
 ----------------------------------------
 *Subtotal:* LKR ${rawSubtotal.toLocaleString()}${
-  appliedPromo ? `\n*Promo (${appliedPromo.code}):* -LKR ${promoDiscount.toLocaleString()}` : ''
-}
+      appliedPromo
+        ? `\n*Promo (${appliedPromo.code} - ${appliedPromo.percent}% OFF):* -LKR ${promoDiscount.toLocaleString()}`
+        : ''
+    }
 *Shipping:* ${isFreeShipping ? 'COMPLIMENTARY (FREE)' : `LKR ${shippingAmount.toLocaleString()}`}
-*Total:* LKR ${total.toLocaleString()}${customPrompt}
+*Total Payable:* LKR ${total.toLocaleString()}${customPrompt}
 
-Please confirm my order and send payment details. Thank you!`;
+*Delivery Details:*
+• Name: 
+• Address: 
+• Contact No: 
+
+Please confirm my order and share payment details. Thank you!`;
 
     const encodedMessage = encodeURIComponent(messageText);
-    const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/${BRAND_INFO.whatsappNumber}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
@@ -319,29 +344,19 @@ Please confirm my order and send payment details. Thank you!`;
                   </div>
                 </div>
 
-                {/* Standard Checkout CTA */}
-                <button
-                  type="button"
-                  onClick={() => onCheckout({ items, total, promo: appliedPromo })}
-                  className="w-full py-3.5 rounded-lg bg-[#1A1A1A] text-white text-xs font-bold font-mono tracking-widest uppercase hover:bg-black transition-all flex items-center justify-center gap-2 shadow-md active:scale-98 cursor-pointer min-h-[48px]"
-                >
-                  <span>Proceed to Checkout</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-
-                {/* Pre-filled "Order via WhatsApp" Button */}
+                {/* Primary & Exclusive WhatsApp Order CTA */}
                 <button
                   type="button"
                   onClick={handleWhatsAppOrder}
-                  className="w-full py-3 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold font-mono tracking-wider uppercase transition-all flex items-center justify-center gap-2 shadow-sm active:scale-98 cursor-pointer min-h-[44px]"
+                  className="w-full py-3.5 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold font-mono tracking-wider uppercase transition-all flex items-center justify-center gap-2 shadow-md active:scale-98 cursor-pointer min-h-[48px]"
                 >
-                  <MessageCircle className="w-4 h-4 fill-white text-[#25D366]" />
+                  <MessageCircle aria-hidden="true" className="w-4 h-4 fill-white text-[#25D366]" />
                   <span>Order via WhatsApp</span>
                 </button>
 
                 <div className="flex items-center justify-center gap-2 text-[11px] text-black/50 pt-1">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Bank-Grade Encryption · Instant Dispatch</span>
+                  <ShieldCheck aria-hidden="true" className="w-3.5 h-3.5" />
+                  <span>Direct WhatsApp Order · {BRAND_INFO.whatsappDisplay}</span>
                 </div>
 
               </div>

@@ -10,6 +10,8 @@ export const BRAND_INFO = {
   collection: "FW26 RUNWAY ARCHIVE",
   currency: "LKR",
   currencySymbol: "LKR",
+  whatsappNumber: "94715743179",
+  whatsappDisplay: "071 574 3179",
   bundleDiscountPercent: 10,
   freeShippingThreshold: 10000,
   promoCodes: {

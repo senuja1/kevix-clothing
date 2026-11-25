@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Check, ExternalLink, MessageSquare, X } from 'lucide-react';
 import { KevixWordmark } from './KevixWordmark';
+import { BRAND_INFO } from '../data/looksData';
 
 const LEGAL_CONTENT = {
   privacy: {
@@ -52,7 +53,7 @@ export function Footer() {
 
   const handleLiveChat = () => {
     const msg = encodeURIComponent('Hello KevixClothing! I have an inquiry about the FW26 Archive.');
-    window.open(`https://wa.me/?text=${msg}`, '_blank', 'noopener,noreferrer');
+    window.open(`https://wa.me/${BRAND_INFO.whatsappNumber}?text=${msg}`, '_blank', 'noopener,noreferrer');
   };
 
   const currentDoc = activeLegal ? LEGAL_CONTENT[activeLegal] : null;

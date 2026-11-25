@@ -5,7 +5,6 @@ import { HomePage } from './pages/HomePage';
 import { CollectionPage } from './pages/CollectionPage';
 import { CampaignPage } from './pages/CampaignPage';
 import { CartDrawer } from './components/CartDrawer';
-import { CheckoutModal } from './components/CheckoutModal';
 import { LoadingScreen } from './components/LoadingScreen';
 import { Footer } from './components/Footer';
 import { LOOKS_DATA } from './data/looksData';
@@ -28,10 +27,6 @@ export function App() {
   // Global cart state
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-
-  // Checkout modal
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [lastOrderDetails, setLastOrderDetails] = useState(null);
 
   const currentLook = LOOKS_DATA[currentLookIndex] || LOOKS_DATA[0];
 
@@ -103,16 +98,6 @@ export function App() {
 
   const handleRemoveItem = (id) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const handleCheckout = (orderDetails) => {
-    setLastOrderDetails(orderDetails);
-    setIsCartOpen(false);
-    setIsCheckoutOpen(true);
-  };
-
-  const handleClearCart = () => {
-    setCartItems([]);
   };
 
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -205,22 +190,13 @@ export function App() {
       {/* International Luxury Footer */}
       <Footer />
 
-      {/* Shared Slide-over Cart Preview Drawer */}
+      {/* Shared Slide-over Cart Preview Drawer (WhatsApp Ordering Only) */}
       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         items={cartItems}
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
-        onCheckout={handleCheckout}
-      />
-
-      {/* Shared Order Confirmation Modal with Confetti */}
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        orderDetails={lastOrderDetails}
-        onClearCart={handleClearCart}
       />
 
     </div>
