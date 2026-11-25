@@ -1,44 +1,171 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Pause, Play } from 'lucide-react';
+
+const PORTRAIT_QUERY = '(max-aspect-ratio: 1/1)';
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
 export function HeroSection() {
-  const handleScrollToCatwalk = () => {
-    const el = document.getElementById('catwalk-stage');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+  const sectionRef = useRef(null);
+  const videoRef = useRef(null);
+
+  const [isPortrait, setIsPortrait] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(PORTRAIT_QUERY).matches : false
+  );
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(REDUCED_MOTION_QUERY).matches : false
+  );
+  // null = follow system motion preference; boolean = explicit user override
+  const [userPaused, setUserPaused] = useState(null);
+  const [isInView, setIsInView] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const shouldPlay = userPaused !== null ? !userPaused : !prefersReducedMotion;
+
+  // Listen for viewport aspect-ratio changes (device rotation, resize) and reduced-motion changes
+  useEffect(() => {
+    const portraitMql = window.matchMedia(PORTRAIT_QUERY);
+    const motionMql = window.matchMedia(REDUCED_MOTION_QUERY);
+
+    const onPortraitChange = (e) => setIsPortrait(e.matches);
+    const onMotionChange = (e) => setPrefersReducedMotion(e.matches);
+
+    portraitMql.addEventListener('change', onPortraitChange);
+    motionMql.addEventListener('change', onMotionChange);
+
+    return () => {
+      portraitMql.removeEventListener('change', onPortraitChange);
+      motionMql.removeEventListener('change', onMotionChange);
+    };
+  }, []);
+
+  // Pause background video when scrolled out of view to save GPU/battery on mobile
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Sync muted autoplay properties & playback state across iOS Safari, Android Chrome, and Desktop
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+
+    vid.defaultMuted = true;
+    vid.muted = true;
+    vid.playsInline = true;
+    vid.setAttribute('muted', '');
+    vid.setAttribute('playsinline', '');
+    vid.setAttribute('webkit-playsinline', '');
+
+    const attemptPlay = () => {
+      if (!videoRef.current) return;
+      videoRef.current.play().catch(() => {
+        setIsPlaying(false);
+      });
+    };
+
+    if (shouldPlay && isInView) {
+      attemptPlay();
     } else {
-      window.scrollTo({ top: window.innerHeight - 56, behavior: 'smooth' });
+      vid.pause();
+    }
+
+    // Unlock autoplay on first touch for strict mobile environments (e.g. iOS Low Power Mode)
+    const unlockOnTouch = () => {
+      if (shouldPlay && isInView && videoRef.current?.paused) {
+        attemptPlay();
+      }
+    };
+    window.addEventListener('touchstart', unlockOnTouch, { once: true, passive: true });
+    return () => window.removeEventListener('touchstart', unlockOnTouch);
+  }, [shouldPlay, isInView, isPortrait]);
+
+  const handleTogglePlayback = (e) => {
+    e.stopPropagation();
+    const vid = videoRef.current;
+    if (!vid) return;
+
+    if (isPlaying) {
+      setUserPaused(true);
+      vid.pause();
+    } else {
+      setUserPaused(false);
+      vid.muted = true;
+      vid.play().catch(() => {});
     }
   };
 
+  const handleScrollToCatwalk = () => {
+    const el = document.getElementById('catwalk-stage');
+    if (el) {
+      el.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    } else {
+      window.scrollTo({
+        top: window.innerHeight - 56,
+        behavior: prefersReducedMotion ? 'auto' : 'smooth'
+      });
+    }
+  };
+
+  const posterSrc = isPortrait
+    ? '/hero/kvx_runway_hero_mobile.webp'
+    : '/hero/kvx_runway_hero.webp';
+  const webmSrc = isPortrait
+    ? '/hero/kvx_runway_hero_mobile.webm'
+    : '/hero/kvx_runway_hero.webm';
+  const mp4Src = isPortrait
+    ? '/hero/kvx_runway_hero_mobile.mp4'
+    : '/hero/kvx_runway_hero.mp4';
+  const videoWidth = isPortrait ? 720 : 1280;
+  const videoHeight = isPortrait ? 1280 : 720;
+
   return (
-    <section 
+    <section
+      ref={sectionRef}
       id="hero-banner"
-      className="relative w-full min-h-[100svh] flex flex-col justify-end overflow-hidden bg-black select-none border-b border-black/15"
+      className="relative w-full h-[100svh] min-h-[520px] flex flex-col justify-end overflow-hidden bg-black select-none border-b border-black/15"
     >
-      {/* Background Cinematic Runway Photo with KVX CLOTHING Wordmark */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <picture className="w-full h-full block">
-          <source media="(max-width: 768px)" srcSet="/hero/kvx_runway_hero_mobile.jpg" />
-          <motion.img 
-            initial={{ scale: 1.05, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            src="/hero/kvx_runway_hero.jpg" 
-            alt="KevixClothing Runway" 
-            className="w-full h-full object-cover object-center cursor-pointer"
-            onClick={handleScrollToCatwalk}
-          />
-        </picture>
-        {/* Subtle Vignette Gradients */}
-        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
+      {/* Background Cinematic KVX CLOTHING Runway Video (Responsive Landscape & Portrait) */}
+      <div
+        className="absolute inset-0 z-0 overflow-hidden bg-black cursor-pointer"
+        onClick={handleScrollToCatwalk}
+      >
+        <video
+          key={isPortrait ? 'portrait' : 'landscape'}
+          ref={videoRef}
+          width={videoWidth}
+          height={videoHeight}
+          poster={posterSrc}
+          autoPlay={shouldPlay}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          tabIndex={-1}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          className="w-full h-full object-cover object-center pointer-events-none"
+        >
+          <source src={webmSrc} type="video/webm" />
+          <source src={mp4Src} type="video/mp4" />
+        </video>
+
+        {/* Subtle Vignette Gradients for Navbar & Bottom Cue Legibility */}
+        <div className="absolute inset-x-0 top-0 h-28 sm:h-32 bg-gradient-to-b from-black/65 via-black/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
       </div>
 
       {/* Bottom Cue to Enter Runway Stage: Animated Down Arrow Only (>= 44x44px target) */}
-      <motion.div 
-        initial={{ opacity: 0, y: 15 }}
+      <motion.div
+        initial={prefersReducedMotion ? false : { opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 pb-8 sm:pb-12 flex flex-col items-center justify-center pointer-events-none"
@@ -47,12 +174,28 @@ export function HeroSection() {
           type="button"
           onClick={handleScrollToCatwalk}
           aria-label="Scroll down to catwalk stage"
-          className="pointer-events-auto group p-3.5 rounded-full text-white/80 hover:text-white transition-all duration-300 hover:scale-110 active:scale-90 cursor-pointer min-w-[44px] min-h-[44px] flex items-center justify-center"
+          className="pointer-events-auto group p-3.5 rounded-full text-white/80 hover:text-white transition-all duration-300 hover:scale-110 active:scale-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer min-w-[44px] min-h-[44px] flex items-center justify-center"
         >
-          <ChevronDown className="w-8 h-8 sm:w-10 sm:h-10 animate-bounce stroke-[1.5] filter drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]" />
+          <ChevronDown
+            aria-hidden="true"
+            className="w-8 h-8 sm:w-10 sm:h-10 motion-safe:animate-bounce stroke-[1.5] filter drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]"
+          />
         </button>
       </motion.div>
 
+      {/* Accessible Background Video Playback Control (WCAG 2.2.2 Pause, Stop, Hide) */}
+      <button
+        type="button"
+        onClick={handleTogglePlayback}
+        aria-label={isPlaying ? 'Pause background video' : 'Play background video'}
+        className="absolute bottom-8 right-5 sm:bottom-12 sm:right-8 z-20 min-w-[44px] min-h-[44px] rounded-full bg-black/45 hover:bg-black/75 backdrop-blur-md border border-white/20 text-white/85 hover:text-white flex items-center justify-center transition-colors duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer shadow-lg"
+      >
+        {isPlaying ? (
+          <Pause aria-hidden="true" className="w-4 h-4 fill-current" />
+        ) : (
+          <Play aria-hidden="true" className="w-4 h-4 fill-current ml-0.5" />
+        )}
+      </button>
     </section>
   );
 }
